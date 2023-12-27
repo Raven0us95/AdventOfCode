@@ -1,4 +1,4 @@
-﻿using AdventOfCode2023._1;
+﻿using AdventOfCode2023.Puzzles;
 using System;
 using System.Collections.Generic;
 using System.IO;

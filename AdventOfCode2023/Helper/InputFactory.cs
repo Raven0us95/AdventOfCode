@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdventOfCode2023.helper
+namespace AdventOfCode2023.Helper
 {
     public class InputFactory
     {

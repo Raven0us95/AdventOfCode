@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Puzzle1\Puzzle1.cs" />
+    <Compile Include="Puzzles\Puzzle1.cs" />
     <Compile Include="Helper\InputFactory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

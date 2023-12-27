@@ -1,11 +1,11 @@
-﻿using AdventOfCode2023.helper;
+﻿using AdventOfCode2023.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdventOfCode2023._1
+namespace AdventOfCode2023.Puzzles
 {
     public class Puzzle1
     {
