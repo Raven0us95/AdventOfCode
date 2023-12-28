@@ -1,4 +1,5 @@
-﻿using AdventOfCode2023.Puzzles;
+﻿using AdventOfCode2023.Helper;
+using AdventOfCode2023.Puzzles;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,8 +15,12 @@ namespace AdventOfCode2023
     {
         static void Main(string[] args)
         {
-            Puzzle1 puzzle1 = new Puzzle1();
-            puzzle1.Solve();
+            string path = $@"{AppDomain.CurrentDomain.BaseDirectory}\input.txt";
+            var input = InputFactory.Instance.GetInputString(path);
+            //Puzzle1 puzzle1 = new Puzzle1(input);
+            //puzzle1.Solve();
+            Puzzle2 puzzle2 = new Puzzle2(input);
+            puzzle2.Solve();
             Console.ReadLine();
         }
     }

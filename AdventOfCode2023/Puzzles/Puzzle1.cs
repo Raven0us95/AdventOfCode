@@ -11,14 +11,11 @@ namespace AdventOfCode2023.Puzzles
     {
         // On each line, the calibration value can be found by combining the first digit and the last digit(in that order) to form a single two-digit number.
         // Consider your entire calibration document. What is the sum of all of the calibration values?
-        private string path = $@"{AppDomain.CurrentDomain.BaseDirectory}\input.txt";
+       
         private string input;
-        private string output;
-
-        public string Output => output;
-        public Puzzle1()
+        public Puzzle1(string input)
         {
-            input = InputFactory.Instance.GetInputString(path);
+            this.input = input;
         }
         public void Solve()
         {
