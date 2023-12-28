@@ -43,17 +43,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Puzzles\Puzzle1.cs" />
+    <Compile Include="Puzzles\day1\Puzzle1.cs" />
     <Compile Include="Helper\InputFactory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Puzzles\Puzzle2.cs" />
+    <Compile Include="Puzzles\day1\Puzzle2.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Puzzles\day1\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
