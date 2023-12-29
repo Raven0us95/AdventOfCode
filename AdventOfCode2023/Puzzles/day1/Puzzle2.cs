@@ -1,9 +1,11 @@
 ﻿using AdventOfCode2023.Helper;
+using AdventOfCode2023.models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace AdventOfCode2023.Puzzles
@@ -28,6 +30,9 @@ namespace AdventOfCode2023.Puzzles
             //    "7pqrstsixteen"
             //};
             int sum = 0;
+            //Regex regex = new Regex(@"(one|two|three|four|five|six|seven|eight|nine|\d+)");
+            //MatchCollection matches = regex.Matches("xtwone3fouroneight");
+            // regex matches for each individual number
 
             for (int i = 0; i < array.Count(); i++)
             {
