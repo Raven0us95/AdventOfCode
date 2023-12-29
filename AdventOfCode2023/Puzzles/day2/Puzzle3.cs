@@ -1,6 +1,5 @@
 ﻿using AdventOfCode2023.Helper;
 using AdventOfCode2023.models;
-using AdventOfCode2023.models.interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,8 +16,8 @@ namespace AdventOfCode2023.Puzzles
             Input = input;
         }
         public string Input { get; set; }
-        public Game CurrentGame { get; set; }
-        public List<Game> Games { get; set; } = new List<Game>();
+        public CubeGame CurrentGame { get; set; }
+        public List<CubeGame> Games { get; set; } = new List<CubeGame>();
 
         public void Solve()
         {
@@ -66,7 +65,7 @@ namespace AdventOfCode2023.Puzzles
 
             int.TryParse(removePrefixFromGameId, out int id);
             var sets = splitSetInfo.ToList();
-            CurrentGame = new Game(id, sets);
+            CurrentGame = new CubeGame(id, sets);
         }
     }
 }

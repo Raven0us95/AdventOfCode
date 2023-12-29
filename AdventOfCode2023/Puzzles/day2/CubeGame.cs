@@ -1,5 +1,4 @@
-﻿using AdventOfCode2023.models.interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace AdventOfCode2023.models
 {
-    public class Game : IGame
+    public class CubeGame
     {
         private int sumOfRed = 0;
         private int sumOfGreen = 0;
         private int sumOfBlue = 0;
         public int Id { get; set; }
-        public Game(int id, List<string> sets)
+        public CubeGame(int id, List<string> sets)
         {
             this.Id = id;
             this.Sets = sets;
