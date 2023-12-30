@@ -23,7 +23,7 @@ namespace AdventOfCode2023.Puzzles
         {
             int sumOfIds = 0;
             int sumOfCubePower = 0;
-            var array = InputFactory.Instance.CreateInputArray(Input);
+            var array = InputFactory.Instance.CreateInputStringArray(Input);
             string testInputPossible = "Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green";
             string testInputImpossible = "Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red";
             //Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green

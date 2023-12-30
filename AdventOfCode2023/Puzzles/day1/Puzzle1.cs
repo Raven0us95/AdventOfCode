@@ -19,7 +19,7 @@ namespace AdventOfCode2023.Puzzles
         }
         public void Solve()
         {
-            var array = InputFactory.Instance.CreateInputArray(input);
+            var array = InputFactory.Instance.CreateInputStringArray(input);
             //string[] array = new string[]{
             //    "1abc2",
             //    "pqr3stu8vwx",

@@ -22,9 +22,10 @@ namespace AdventOfCode2023
             //puzzle1.Solve();
             //Puzzle2 puzzle2 = new Puzzle2(input);
             //puzzle2.Solve();
-
-            IPuzzle puzzle3 = new Puzzle3(input);
-            puzzle3.Solve();
+            //IPuzzle puzzle3 = new Puzzle3(input);
+            //puzzle3.Solve();
+            IPuzzle puzzle4 = new Puzzle4(input);
+            puzzle4.Solve();
 
             Console.ReadLine();
         }

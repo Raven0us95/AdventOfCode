@@ -25,11 +25,32 @@ namespace AdventOfCode2023.Helper
 
         public static InputFactory Instance => instance;
 
-        public string[] CreateInputArray(string input)
+        public string[] CreateInputStringArray(string input)
         {
             // for each line ending add a string to the array
             string[] lines = input.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
             return lines;
+        }
+
+        public char[,] CreateInput2DCharArray(string input)
+        {
+            // Split the input string by lines
+            string[] lines = CreateInputStringArray(input);
+
+            // Create a 2D char array
+            char[,] charArray = new char[lines.Length, lines.Max(line => line.Length)];
+
+            // Fill the char array
+            for (int i = 0; i < lines.Length; i++)
+            {
+                char[] chars = lines[i].ToCharArray();
+                for (int j = 0; j < chars.Length; j++)
+                {
+                    charArray[i, j] = chars[j];
+                }
+            }
+
+            return charArray;
         }
 
         public string GetInputString(string path)
