@@ -52,12 +52,12 @@ namespace AdventOfCode2023.Puzzles
                     if (!char.IsLetterOrDigit(currentChar) && currentChar != '.')
                     {
                         // special char position found
-                        CheckSquarePattern(schematic, i, j, 1);
+                        CheckSquarePattern(schematic, i, j, 1, false);
 
                         // part 2 find the gear ratios of gears (*)
                         if (currentChar == '*')
                         {
-                            CheckGearSquarePattern(schematic, i, j, 1);
+                            CheckSquarePattern(schematic, i, j, 1, true);
                         }
                     }
                 }
@@ -74,15 +74,15 @@ namespace AdventOfCode2023.Puzzles
             Console.WriteLine(sum);
             Console.WriteLine(gearRatioSum);
         }
-        private void CheckGearSquarePattern(char[,] charArray, int centerX, int centerY, int radius)
+        private void CheckSquarePattern(char[,] charArray, int centerX, int centerY, int radius, bool centerIsGear)
         {
             int firstNumber = 0;
             int secondNumber = 0;
             int lastFoundNumber = 0;
             // Iterate through positions in a square pattern around the center
-            for (int i = centerX - radius; i <= centerX + radius && secondNumber == 0; i++)
+            for (int i = centerX - radius; i <= centerX + radius && (secondNumber == 0 || !centerIsGear); i++)
             {
-                for (int j = centerY - radius; j <= centerY + radius && secondNumber == 0; j++)
+                for (int j = centerY - radius; j <= centerY + radius && (secondNumber == 0 || !centerIsGear); j++)
                 {
                     // Check if the current position is within the square pattern
                     if (IsInSquarePattern(centerX, centerY, i, j, radius) &&
@@ -99,53 +99,31 @@ namespace AdventOfCode2023.Puzzles
                             if (number != lastFoundNumber)
                             {
                                 lastFoundNumber = number;
-                                if (firstNumber == 0)
+                                if (centerIsGear)
                                 {
-                                    firstNumber = number;
+                                    if (firstNumber == 0)
+                                    {
+                                        firstNumber = number;
+                                    }
+                                    else if (secondNumber == 0)
+                                    {
+                                        secondNumber = number;
+                                    }
                                 }
-                                else if (secondNumber == 0)
+                                else
                                 {
-                                    secondNumber = number;
+                                    numbers.Add(number);
                                 }
                             }
                         }
                     }
                 }
             }
-            if (firstNumber * secondNumber != 0 && firstNumber != secondNumber)
+            if (firstNumber * secondNumber != 0 && 
+                firstNumber != secondNumber &&
+                centerIsGear)
             {
                 gearRatios.Add(firstNumber * secondNumber);
-            }
-        }
-        private void CheckSquarePattern(char[,] charArray, int centerX, int centerY, int radius)
-        {
-            int lastFoundNumber = 0;
-            // Iterate through positions in a square pattern around the center
-            for (int i = centerX - radius; i <= centerX + radius; i++)
-            {
-                for (int j = centerY - radius; j <= centerY + radius; j++)
-                {
-                    // Check if the current position is within the square pattern
-                    if (IsInSquarePattern(centerX, centerY, i, j, radius) &&
-                        IsWithinBounds(charArray, i, j))
-                    {
-                        // visualize
-                        //Console.WriteLine($"Position in square pattern: ({i}, {j}) - Character: {charArray[i, j]}");
-                        //PrintArray(charArray, i, j, centerX, centerY);
-
-                        if (char.IsNumber(charArray[i, j]))
-                        {
-                            // found a number nearby the special character
-                            var number = GetFullNumber(charArray, i, j);
-
-                            if (number != lastFoundNumber)
-                            {
-                                lastFoundNumber = number;
-                                numbers.Add(number);
-                            }
-                        }
-                    }
-                }
             }
         }
 
