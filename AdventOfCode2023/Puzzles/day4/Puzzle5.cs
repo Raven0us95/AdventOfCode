@@ -4,6 +4,7 @@ using AdventOfCode2023.models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,7 +29,7 @@ namespace AdventOfCode2023.Puzzles.day4
             Input = input;
         }
 
-        public void Solve()
+        public async void Solve()
         {
             var input = InputFactory.Instance.CreateInputStringArray(Input);
 
@@ -52,6 +53,8 @@ namespace AdventOfCode2023.Puzzles.day4
             {
                 // create Cards
                 cards.Add(CreateCard(input[i], i));
+                //var card = await CreateCardAsync(input[i], i);
+                //cards.Add(card);
                 Console.WriteLine($"card {i} of {input.Length} created");
             }
             foreach (var card in cards)
@@ -59,6 +62,51 @@ namespace AdventOfCode2023.Puzzles.day4
                 sumPart2 += 1;
                 sumPart2 += GetSumOfCard(card);
             }
+            Console.WriteLine(sumPart2);
+        }
+
+        private async Task<Card> CreateCardAsync(string input, int index)
+        {
+            var splitCards = SplitCards(input);
+            var winningNumbers = GetNumberList(splitCards[0].Split(' '));
+            var myNumbers = GetNumberList(splitCards[1].Split(' '));
+            int countOfMatches = GetCountOfMatches(winningNumbers, myNumbers);
+            Card card = new Card(winningNumbers, myNumbers, index, countOfMatches);
+            if (countOfMatches > 0)
+            {
+                card.SubCards = await CreateSubCardsAsync(card);
+            }
+
+            return card;
+        }
+        private async Task<List<Card>> CreateSubCardsAsync(Card card)
+        {
+            List<Task<Card>> cardTasks = new List<Task<Card>>();
+            var subCards = new List<Card>();
+            if (card.CountOfMatches < 1)
+            {
+                Console.WriteLine("No more subcards to add");
+                return subCards;
+            }
+            // insert copies for each match
+            for (int i = 1; i <= card.CountOfMatches; i++)
+            {
+                int subCardIndex = card.Index + i;
+                if (EnumerableBoundaryHandler.Instance.IsWithinBounds(inputCopy, subCardIndex))
+                {
+                    cardTasks.Add(CreateCardAsync(inputCopy[subCardIndex], subCardIndex));
+                    //Console.WriteLine($"card {subCardIndex} of {inputCopy.Count} creation started");
+                }
+                else
+                {
+                    Console.WriteLine($"{nameof(CreateSubCardsAsync)} IndexOutOfBounds!");
+                }
+            }
+
+            await Task.WhenAll(cardTasks);
+
+            subCards = cardTasks.Select(task => task.Result).ToList();
+            return subCards;
         }
 
         private int GetSumOfCard(Card card)
@@ -90,12 +138,13 @@ namespace AdventOfCode2023.Puzzles.day4
             {
                 card.SubCards = CreateSubCards(card);
             }
+            
             return card;
         }
         private List<Card> CreateSubCards(Card card)
         {
             var subCards = new List<Card>();
-            if (card.CountOfMatches == 0)
+            if (card.CountOfMatches < 1)
             {
                 Console.WriteLine("No more subcards to add");
                 return subCards;
@@ -108,6 +157,10 @@ namespace AdventOfCode2023.Puzzles.day4
                 {
                     var subCard = CreateCard(inputCopy[subCardIndex], subCardIndex);
                     subCards.Add(subCard);
+                }
+                else
+                {
+                    Console.WriteLine($"{nameof(CreateSubCards)} IndexOutOfBounds!");
                 }
             }
             return subCards;
