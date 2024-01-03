@@ -1,4 +1,5 @@
-﻿using AdventOfCode2023.Helper;
+﻿using AdventOfCode2023.Factories;
+using AdventOfCode2023.Handler;
 using AdventOfCode2023.models;
 using System;
 using System.Collections.Generic;
@@ -86,7 +87,7 @@ namespace AdventOfCode2023.Puzzles
                 {
                     // Check if the current position is within the square pattern
                     if (IsInSquarePattern(centerX, centerY, i, j, radius) &&
-                        IsWithinBounds(charArray, i, j))
+                        TwoDimensionalArrayBoundaryHandler.Instance.IsWithinBounds(charArray, i, j))
                     {
                         // visualize
                         //Console.WriteLine($"Position in square pattern: ({i}, {j}) - Character: {charArray[i, j]}");

@@ -1,6 +1,7 @@
-﻿using AdventOfCode2023.Helper;
+﻿using AdventOfCode2023.Factories;
 using AdventOfCode2023.models;
 using AdventOfCode2023.Puzzles;
+using AdventOfCode2023.Puzzles.day4;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,14 +19,17 @@ namespace AdventOfCode2023
         {
             string path = $@"{AppDomain.CurrentDomain.BaseDirectory}\input.txt";
             var input = InputFactory.Instance.GetInputString(path);
+            var input2 = InputFactory.Instance.GetInputString(path);
             //Puzzle1 puzzle1 = new Puzzle1(input);
             //puzzle1.Solve();
             //Puzzle2 puzzle2 = new Puzzle2(input);
             //puzzle2.Solve();
             //IPuzzle puzzle3 = new Puzzle3(input);
             //puzzle3.Solve();
-            IPuzzle puzzle4 = new Puzzle4(input);
-            puzzle4.Solve();
+            //IPuzzle puzzle4 = new Puzzle4(input);
+            //puzzle4.Solve();
+            Puzzle5 puzzle5 = new Puzzle5(input);
+            puzzle5.Solve();
 
             Console.ReadLine();
         }

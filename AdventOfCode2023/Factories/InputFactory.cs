@@ -7,17 +7,13 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdventOfCode2023.Helper
+namespace AdventOfCode2023.Factories
 {
     public class InputFactory
     {
         private string path = $@"{AppDomain.CurrentDomain.BaseDirectory}";
         private static InputFactory instance = new InputFactory();
 
-        static InputFactory()
-        {
-
-        }
         private InputFactory()
         {
 
