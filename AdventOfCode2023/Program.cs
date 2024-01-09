@@ -19,7 +19,6 @@ namespace AdventOfCode2023
         {
             string path = $@"{AppDomain.CurrentDomain.BaseDirectory}\input.txt";
             var input = InputFactory.Instance.GetInputString(path);
-            var input2 = InputFactory.Instance.GetInputString(path);
             //Puzzle1 puzzle1 = new Puzzle1(input);
             //puzzle1.Solve();
             //Puzzle2 puzzle2 = new Puzzle2(input);

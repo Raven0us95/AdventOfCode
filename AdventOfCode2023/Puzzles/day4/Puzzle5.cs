@@ -31,8 +31,12 @@ namespace AdventOfCode2023.Puzzles.day4
 
         public async void Solve()
         {
+            if (Input is null)
+            {
+                return;
+            }
             var input = InputFactory.Instance.CreateInputStringArray(Input);
-
+            
             //part one
             // get count of matching numbers
             // multiply for each match
@@ -111,6 +115,9 @@ namespace AdventOfCode2023.Puzzles.day4
 
         private int GetSumOfCard(Card card)
         {
+            // wenn eine Card evaluiert wurde speichere die Informationen in einer Liste
+            // prüfe ob die zu evaluierende Card bereits in der Liste ist
+            // wenn ja muss keine neue Card erzeugt werden sondern die Informationen können dem Speicher entnommen werden
             int sum = 0;
             sum += card.CountOfMatches;
             sum += GetSumOfSubCards(card.SubCards);
