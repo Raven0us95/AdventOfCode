@@ -31,11 +31,15 @@ namespace AdventOfCode2023.Puzzles.day4
 
         public async void Solve()
         {
+            string[] input;
             if (Input is null)
             {
-                return;
+                input = InputFactory.Instance.CreateInputStringArray(testInput);
             }
-            var input = InputFactory.Instance.CreateInputStringArray(Input);
+            else
+            {
+                input = InputFactory.Instance.CreateInputStringArray(Input);
+            }
             
             //part one
             // get count of matching numbers
