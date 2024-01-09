@@ -24,6 +24,7 @@ namespace AdventOfCode2023.Puzzles.day4
                 "Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11";
         List<string> inputCopy;
         private List<Card> cards = new List<Card>();
+        private List<Card> cardInfos = new List<Card>();
         public Puzzle5(string input)
         {
             Input = input;
@@ -60,6 +61,9 @@ namespace AdventOfCode2023.Puzzles.day4
             for (int i = 0; i < input.Length; i++)
             {
                 // create Cards
+                // wenn eine Card evaluiert wurde speichere die Informationen in einer Liste
+                // prüfe ob die zu evaluierende Card bereits in der Liste ist
+                // wenn ja muss keine neue Card erzeugt werden sondern die Informationen können dem Speicher entnommen werden
                 cards.Add(CreateCard(input[i], i));
                 //var card = await CreateCardAsync(input[i], i);
                 //cards.Add(card);
@@ -71,6 +75,7 @@ namespace AdventOfCode2023.Puzzles.day4
                 sumPart2 += GetSumOfCard(card);
             }
             Console.WriteLine(sumPart2);
+            // answer 5037841
         }
 
         private async Task<Card> CreateCardAsync(string input, int index)
@@ -119,9 +124,6 @@ namespace AdventOfCode2023.Puzzles.day4
 
         private int GetSumOfCard(Card card)
         {
-            // wenn eine Card evaluiert wurde speichere die Informationen in einer Liste
-            // prüfe ob die zu evaluierende Card bereits in der Liste ist
-            // wenn ja muss keine neue Card erzeugt werden sondern die Informationen können dem Speicher entnommen werden
             int sum = 0;
             sum += card.CountOfMatches;
             sum += GetSumOfSubCards(card.SubCards);
@@ -140,6 +142,10 @@ namespace AdventOfCode2023.Puzzles.day4
 
         private Card CreateCard(string input, int index)
         {
+            if (cardInfos.Exists(x=>x.Index == index))
+            {
+                return cardInfos.FirstOrDefault(x => x.Index == index);
+            }
             var splitCards = SplitCards(input);
             var winningNumbers = GetNumberList(splitCards[0].Split(' '));
             var myNumbers = GetNumberList(splitCards[1].Split(' '));
@@ -149,7 +155,7 @@ namespace AdventOfCode2023.Puzzles.day4
             {
                 card.SubCards = CreateSubCards(card);
             }
-            
+            cardInfos.Add(card);
             return card;
         }
         private List<Card> CreateSubCards(Card card)
