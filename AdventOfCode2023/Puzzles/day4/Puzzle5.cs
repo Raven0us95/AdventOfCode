@@ -29,7 +29,7 @@ namespace AdventOfCode2023.Puzzles.day4
             Input = input;
         }
 
-        public async void Solve()
+        public void Solve()
         {
             var input = InputFactory.Instance.CreateInputStringArray(Input);
 
