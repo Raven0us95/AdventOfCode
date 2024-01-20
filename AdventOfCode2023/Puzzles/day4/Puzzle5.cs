@@ -13,6 +13,7 @@ namespace AdventOfCode2023.Puzzles.day4
 {
     public class Puzzle5 : IPuzzle
     {
+        private static readonly object listLock = new object();
         private int sumPart1 = 0;
         private int sumPart2 = 0;
         public string Input { get; set; }
@@ -31,7 +32,7 @@ namespace AdventOfCode2023.Puzzles.day4
             Input = input;
         }
 
-        public void Solve()
+        public async void Solve()
         {
             string[] input;
             if (Input is null)
@@ -62,37 +63,43 @@ namespace AdventOfCode2023.Puzzles.day4
             List<Task> cardTasks = new List<Task>();
             for (int i = 0; i < input.Length; i++)
             {
+                int index = i;
                 // create Cards
                 // wenn eine Card evaluiert wurde speichere die Informationen in einer Liste
                 // prüfe ob die zu evaluierende Card bereits in der Liste ist
                 // wenn ja muss keine neue Card erzeugt werden sondern die Informationen können dem Speicher entnommen werden
                 //cards.Add(CreateCard(input[i], i));
-                Task createCards = new Task(() => { CreateCardAsync(input[i], i); });
-                createCards.Start();
+                Task createCards = Task.Run(async () => 
+                { 
+                    var cardResult = await CreateCardAsync(input[index], index);
+                    cards.Add(cardResult);
+                });
+                
                 cardTasks.Add(createCards);
                 //var card = await CreateCardAsync(input[i], i);
                 //cards.Add(card);
                 Console.WriteLine($"card {i + 1} of {input.Length} created");
             }
-            while (cardTasks.All(x => x.IsCompletedSuccessfully == false))
-            {
-                // Thread.Sleep(1);
-            }
+            await Task.WhenAll(cardTasks);
             foreach (var card in cards)
             {
                 sumPart2 += 1;
                 sumPart2 += GetSumOfCard(card);
             }
             Console.WriteLine(sumPart2);
-            // answer 5037841
+            // answer 7013204
         }
 
         private async Task<Card> CreateCardAsync(string input, int index)
         {
-            if (cardInfos.Exists(x => x.Index == index))
+            lock (listLock)
             {
-                return cardInfos.FirstOrDefault(x => x.Index == index);
+                if (cardInfos.Exists(x => x.Index == index))
+                {
+                    return cardInfos.FirstOrDefault(x => x.Index == index);
+                }
             }
+            
             var splitCards = SplitCards(input);
             var winningNumbers = GetNumberList(splitCards[0].Split(' '));
             var myNumbers = GetNumberList(splitCards[1].Split(' '));
@@ -102,8 +109,11 @@ namespace AdventOfCode2023.Puzzles.day4
             {
                 card.SubCards = await CreateSubCardsAsync(card);
             }
-            cardInfos.Add(card);
-            cards.Add(card);
+            lock (listLock)
+            {
+                cardInfos.Add(card);
+            }
+            
             return card;
         }
         private async Task<List<Card>> CreateSubCardsAsync(Card card)
@@ -130,9 +140,9 @@ namespace AdventOfCode2023.Puzzles.day4
                 }
             }
 
-            await Task.WhenAll(cardTasks);
+            var subCardResults = await Task.WhenAll(cardTasks);
 
-            subCards = cardTasks.Select(task => task.Result).ToList();
+            subCards = subCardResults.ToList();
             return subCards;
         }
 
