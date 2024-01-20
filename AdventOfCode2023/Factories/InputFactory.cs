@@ -51,21 +51,16 @@ namespace AdventOfCode2023.Factories
 
         public string GetInputString(string path)
         {
-            string output = "";
-            Stream stream = File.OpenRead(path);
-            using (stream)
+            try
             {
-                try
-                {
-                    var input = new StreamReader(stream).ReadToEnd();
-                    output = input;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
+                using var streamReader = new StreamReader(path);
+                return streamReader.ReadToEnd();
             }
-            return output;
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
     }
 }
