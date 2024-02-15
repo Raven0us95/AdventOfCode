@@ -2,6 +2,7 @@
 using AdventOfCode2023.models;
 using AdventOfCode2023.Puzzles;
 using AdventOfCode2023.Puzzles.day4;
+using AdventOfCode2023.Puzzles.day5;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,8 +28,10 @@ namespace AdventOfCode2023
             //puzzle3.Solve();
             //IPuzzle puzzle4 = new Puzzle4(input);
             //puzzle4.Solve();
-            Puzzle5 puzzle5 = new Puzzle5(input);
-            puzzle5.Solve();
+            //Puzzle5 puzzle5 = new Puzzle5(input);
+            //puzzle5.Solve();
+            Puzzle6 puzzle6 = new Puzzle6(input);
+            puzzle6.Solve();
 
             Console.ReadLine();
         }
