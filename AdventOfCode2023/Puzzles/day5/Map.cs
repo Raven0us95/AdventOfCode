@@ -17,10 +17,10 @@ namespace AdventOfCode2023.Puzzles.day5
         }
         public void Initialize()
         {
-            if (Mappings == null) 
+            if (Mappings == null)
             {
                 Console.WriteLine("Mappings not Initialized!");
-                return; 
+                return;
             }
             MappingManager = new MappingManager(Mappings);
         }
@@ -45,13 +45,26 @@ namespace AdventOfCode2023.Puzzles.day5
     public class MappingManager
     {
         private List<Mapping> sortedMappings;
+        private List<SeedLocation> seedLocations = new List<SeedLocation>();
 
         public MappingManager(IEnumerable<Mapping> mappings)
         {
             // Sort the mappings based on the SourceRangeStart property
             sortedMappings = mappings.OrderBy(m => m.SourceRangeStart).ToList();
         }
-
+        public bool HasSeedLocation(long seed)
+        {
+            var result = false;
+            if (seedLocations.Any(x => x.Seed == seed))
+            {
+                result = true;
+            }
+            return result;
+        }
+        public long GetSeedLocation(long seed)
+        {
+            return seedLocations?.FirstOrDefault(x => x.Seed == seed)?.Location ?? -1;
+        }
         public long FindSeedLocation(long seed)
         {
             // Perform binary search to find the mapping containing the seed
@@ -62,6 +75,7 @@ namespace AdventOfCode2023.Puzzles.day5
                 // Calculate the location based on the found mapping
                 Mapping mapping = sortedMappings[index];
                 long location = mapping.DestinationRangeStart + (seed - mapping.SourceRangeStart);
+                seedLocations.Add(new SeedLocation(seed, location));
                 return location;
             }
             else
@@ -101,5 +115,14 @@ namespace AdventOfCode2023.Puzzles.day5
         }
     }
 
-
+    public class SeedLocation
+    {
+        public long Seed { get; set; }
+        public long Location { get; set; }
+        public SeedLocation(long seed, long location)
+        {
+            Seed = seed;
+            Location = location;
+        }
+    }
 }

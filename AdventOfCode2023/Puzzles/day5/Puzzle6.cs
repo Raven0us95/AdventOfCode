@@ -33,10 +33,10 @@ namespace AdventOfCode2023.Puzzles.day5
             {
                 input = InputFactory.Instance.CreateInputStringArray(Input);
             }
-            seeds = GetSeeds(input);
+            seeds = GetSeedRange(input);
             maps = CreateMaps(input);
 
-            ExecuteSeedMapping(seeds, maps);
+            ExecuteSeedMapping(seeds, maps); // mapping like this takes forever with millions of seeds
 
             // find the lowest seedLocation
             Console.WriteLine(seedLocations.Min());
@@ -54,10 +54,17 @@ namespace AdventOfCode2023.Puzzles.day5
                 foreach (var map in maps)
                 { // atleast in the testInput the maps are in the correct order, so we dont have to look at the names
                     map.Initialize();
-                    seedLocation = map.MappingManager?.FindSeedLocation(seedLocation) ?? 0;
-                    if (seedLocation == 0)
+                    if (map.MappingManager.HasSeedLocation(seed))
                     {
-                        Console.WriteLine("SeedLocation was 0!");
+                        seedLocation = map.MappingManager.GetSeedLocation(seed);
+                    }
+                    else
+                    {
+                        seedLocation = map?.MappingManager?.FindSeedLocation(seedLocation) ?? -1;
+                    }
+                    if (seedLocation < 0)
+                    {
+                        Console.WriteLine("SeedLocation was not Found!");
                     }
                     if (map.Name == "humidity-to-location map:")
                     {
@@ -99,33 +106,6 @@ namespace AdventOfCode2023.Puzzles.day5
             }
             return mapInput;
         }
-
-        private List<long> GetSeeds(string[] input)
-        {
-            var seeds = new List<long>();
-            var split = input[0].Split(' ');
-
-            for (int i = 1; i < split.Length; i++)
-            {
-                seeds.Add(long.Parse(split[i]));
-            }
-
-            return seeds;
-        }
-        //private List<long> GetSeedRange(string[] input)
-        //{
-        //    var seeds = new List<long>();
-        //    var split = input[0].Split(' ');
-
-        //    for (int i = 1; i < split.Length; i+=2)
-        //    {
-        //        var seedRange = new Dictionary<long, long>() { long.Parse(split[i]), long.Parse(split[i] + 1) };
-        //        seeds.Add(long.Parse(split[i]));
-        //    }
-
-        //    return seeds;
-        //}
-
         private Map CreateMap(List<string> input)
         {
             string mapName = input[0];
@@ -146,6 +126,35 @@ namespace AdventOfCode2023.Puzzles.day5
             }
 
             return map;
+        }
+
+        private List<long> GetSeeds(string[] input)
+        {
+            var seeds = new List<long>();
+            var split = input[0].Split(' ');
+
+            for (int i = 1; i < split.Length; i++)
+            {
+                seeds.Add(long.Parse(split[i]));
+            }
+
+            return seeds;
+        }
+        private List<long> GetSeedRange(string[] input)
+        { // this takes alot of time, but is bearable... faster solution?
+            var seeds = new List<long>();
+            var split = input[0].Split(' ');
+            for (int i = 1; i < split.Length; i += 2)
+            {
+                var seedRange = new SeedRange(long.Parse(split[i]), long.Parse(split[i + 1]));
+                
+                for (long j = 0; j <= seedRange.Range; j++)
+                {
+                    seeds.Add(seedRange.Seed + j);
+                }
+            }
+
+            return seeds;
         }
     }
 }
