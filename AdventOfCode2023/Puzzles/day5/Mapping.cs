@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AdventOfCode2023.Puzzles.day5
 {
-    internal class Mapping
+    public class Mapping
     {
         public string Name { get; set; }
         public long SourceRangeStart { get; set; }
