@@ -32,7 +32,7 @@ namespace AdventOfCode2023.Puzzles.day5
             var maps = CreateMaps(input);
 
             List<long> seedLocations = new List<long>();
-            foreach (var seed in seeds)
+            foreach (var seed in seeds) // seeds async?
             {
                 // using the maps, we need to find the location for each seed
                 // the map names tell us what map we have to use next
@@ -42,7 +42,7 @@ namespace AdventOfCode2023.Puzzles.day5
                 foreach (var map in maps)
                 { // atleast in the testInput the maps are in the correct order, so we dont have to look at the names
                     seedLocation = map.FindSeedLocation(seedLocation);
-                    if (seedLocations.Contains(seedLocation) == false)
+                    if (map.Name == "humidity-to-location map:")
                     {
                         seedLocations.Add(seedLocation);
                         Console.WriteLine($"Location for Seed ({seeds.IndexOf(seed) + 1}/{seeds.Count}) Found!");
@@ -51,7 +51,6 @@ namespace AdventOfCode2023.Puzzles.day5
             }
             // find the lowest seedLocation
             Console.WriteLine(seedLocations.Min());
-            Console.ReadLine();
         }
 
         private List<Map> CreateMaps(string[] input)
