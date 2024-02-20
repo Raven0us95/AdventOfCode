@@ -75,7 +75,7 @@ namespace AdventOfCode2023.Puzzles.day5
                 // Calculate the location based on the found mapping
                 Mapping mapping = sortedMappings[index];
                 long location = mapping.DestinationRangeStart + (seed - mapping.SourceRangeStart);
-                seedLocations.Add(new SeedLocation(seed, location));
+                //seedLocations.Add(new SeedLocation(seed, location));
                 return location;
             }
             else
