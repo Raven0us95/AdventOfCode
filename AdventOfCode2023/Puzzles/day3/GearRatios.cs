@@ -1,9 +1,11 @@
 ﻿using AdventOfCode2023.Factories;
 using AdventOfCode2023.Handler;
 using AdventOfCode2023.models;
+using AdventOfCode2023.models.abstraction;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -11,24 +13,13 @@ using System.Threading.Tasks;
 
 namespace AdventOfCode2023.Puzzles
 {
-    public class Puzzle4 : IPuzzle
+    public class GearRatios : PuzzleBase
     {
         private int sum = 0;
         private int gearRatioSum = 0;
         private List<int> numbers = new List<int>();
         private List<int> gearRatios = new List<int>();
-        public Puzzle4(string input)
-        {
-            Input = input;
-            Console.SetWindowSize(20, 15);
-            //Console.SetBufferSize(1000, Int16.MaxValue-1);
-            Console.CursorVisible = false;
-        }
-        public string Input { get; set; }
-
-        public void Solve()
-        {
-            string testInput =
+        private string testInput =
                 "467..114..\r\n" +
                 "...*......\r\n" +
                 "..35..633.\r\n" +
@@ -39,7 +30,22 @@ namespace AdventOfCode2023.Puzzles
                 "......755.\r\n" +
                 "...$.*....\r\n" +
                 ".664.598..";
-            var schematic = InputFactory.Instance.CreateInput2DCharArray(Input);
+
+        public GearRatios(string input) : base(input)
+        {
+            Console.SetWindowSize(20, 15);
+            //Console.SetBufferSize(1000, Int16.MaxValue-1);
+            Console.CursorVisible = false;
+        }
+
+        protected override string GetDefaultInputFromDerived()
+        {
+            return testInput;
+        }
+
+        public override void Solve()
+        {
+            var schematic = GetInput2DCharArray();
 
             // find position of the special char
             // check for numeric values around the special char
@@ -72,8 +78,8 @@ namespace AdventOfCode2023.Puzzles
                 gearRatioSum += gearRatio;
             }
             Console.Clear();
-            Console.WriteLine(sum);
-            Console.WriteLine(gearRatioSum);
+            Console.WriteLine("Sum of Partnumbers: " + sum);
+            Console.WriteLine("Sum of Gearratios: " + gearRatioSum);
         }
         private void CheckSquarePattern(char[,] charArray, int centerX, int centerY, int radius, bool centerIsGear)
         {
@@ -120,7 +126,7 @@ namespace AdventOfCode2023.Puzzles
                     }
                 }
             }
-            if (firstNumber * secondNumber != 0 && 
+            if (firstNumber * secondNumber != 0 &&
                 firstNumber != secondNumber &&
                 centerIsGear)
             {
