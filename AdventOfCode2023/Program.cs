@@ -20,14 +20,24 @@ namespace AdventOfCode2023
     {
         static void Main(string[] args)
         {
-            string path = $@"{AppDomain.CurrentDomain.BaseDirectory}input.txt";
+            int day = 1;
+            string path = $@"{AppDomain.CurrentDomain.BaseDirectory}day{day}_input.txt";
             var input = InputFactory.Instance.GetInputString(path);
 
             //TODO refactor old puzzles
-            //Puzzle1 puzzle1 = new Puzzle1(input);
-            //puzzle1.Solve();
-            //Puzzle2 puzzle2 = new Puzzle2(input);
-            //puzzle2.Solve();
+            switch (day)
+            {
+                case 1: new Trebuchet(input); break;
+                case 2: new Puzzle2(input); break;
+                case 3: new Puzzle3(input); break;
+                case 4: new Puzzle4(input); break;
+                case 5: new Puzzle5(input); break;
+                case 6: new Puzzle6(input); break;
+                case 0:
+                default:
+                    break;
+            }
+            //new Puzzle2(input);
             //IPuzzle puzzle3 = new Puzzle3(input);
             //puzzle3.Solve();
             //IPuzzle puzzle4 = new Puzzle4(input);
@@ -37,7 +47,7 @@ namespace AdventOfCode2023
             //Puzzle6 puzzle6 = new Puzzle6(input);
             //puzzle6.Solve();
 
-            new ToyRace(input);
+            //new ToyRace(input);
 
             Console.ReadLine();
         }
