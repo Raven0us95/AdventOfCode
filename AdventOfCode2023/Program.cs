@@ -20,7 +20,7 @@ namespace AdventOfCode2023
     {
         static void Main(string[] args)
         {
-            int day = 4;
+            int day = 5;
             string path = $@"{AppDomain.CurrentDomain.BaseDirectory}day{day}_input.txt";
             var input = InputFactory.Instance.GetInputString(path);
 
@@ -31,24 +31,16 @@ namespace AdventOfCode2023
                 case 2: new CubeConundrum(input); break;
                 case 3: new GearRatios(input); break;
                 case 4: new Scratchcards(input); break;
-                case 5: new Puzzle6(input); break;
+                case 5: new PlantingSeeds(input); break;
+                case 6: new ToyRace(input); break;
                 case 0:
                 default:
                     break;
             }
-            //new Puzzle2(input);
-            //IPuzzle puzzle3 = new Puzzle3(input);
-            //puzzle3.Solve();
-            //IPuzzle puzzle4 = new Puzzle4(input);
-            //puzzle4.Solve();
-            //Puzzle5 puzzle5 = new Puzzle5(input);
-            //puzzle5.Solve();
-            //Puzzle6 puzzle6 = new Puzzle6(input);
-            //puzzle6.Solve();
 
-            //new ToyRace(input);
-
-            Console.ReadLine();
+            Console.WriteLine("Press any key to close the console...");
+            Console.ReadKey(true);
+            Environment.Exit(0);
         }
     }
 }

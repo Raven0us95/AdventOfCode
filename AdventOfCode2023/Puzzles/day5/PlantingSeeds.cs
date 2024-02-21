@@ -1,5 +1,6 @@
 ﻿using AdventOfCode2023.Factories;
 using AdventOfCode2023.models;
+using AdventOfCode2023.models.abstraction;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,31 +12,31 @@ using System.Timers;
 
 namespace AdventOfCode2023.Puzzles.day5
 {
-    public class Puzzle6 : IPuzzle
+    public class PlantingSeeds : PuzzleBase
     {
-        private Timer timer = new Timer();
         private List<long> seeds;
         private List<Map> maps;
-        List<long> seedLocations = new List<long>();
         long lowestLocation = long.MaxValue;
         private string testInput = "seeds: 79 14 55 13\r\n\r\nseed-to-soil map:\r\n50 98 2\r\n52 50 48\r\n\r\nsoil-to-fertilizer map:\r\n0 15 37\r\n37 52 2\r\n39 0 15\r\n\r\nfertilizer-to-water map:\r\n49 53 8\r\n0 11 42\r\n42 0 7\r\n57 7 4\r\n\r\nwater-to-light map:\r\n88 18 7\r\n18 25 70\r\n\r\nlight-to-temperature map:\r\n45 77 23\r\n81 45 19\r\n68 64 13\r\n\r\ntemperature-to-humidity map:\r\n0 69 1\r\n1 0 69\r\n\r\nhumidity-to-location map:\r\n60 56 37\r\n56 93 4";
-        public Puzzle6(string input)
-        {
-            Input = input;
-        }
-        public string Input { get; set; }
 
-        public async void Solve()
+        public PlantingSeeds(string input) : base(input)
         {
-            string[] input;
-            if (Input is null)
-            {
-                input = InputFactory.Instance.CreateInputStringArray(testInput);
-            }
-            else
-            {
-                input = InputFactory.Instance.CreateInputStringArray(Input);
-            }
+        }
+
+        protected override string GetDefaultInputFromDerived()
+        {
+            return testInput;
+        }
+        public override void Solve()
+        {
+            SolvePartOne();
+            // TODO PartTwo should give the correct answer but will take hours to calculate
+            //SolvePartTwo();
+        }
+
+        private void SolvePartTwo()
+        {
+            var input = GetInputStringArray();
             seeds = GetSeedRange(input);
             maps = CreateMaps(input);
 
@@ -44,15 +45,22 @@ namespace AdventOfCode2023.Puzzles.day5
                 ExecuteSeedMapping(seed, maps);
             });
 
-            //List<Task> tasks = new List<Task>();
-            //foreach (var seed in seeds)
-            //{
-            //    Task task = Task.Run(() => ExecuteSeedMapping(seed, maps)); // mapping like this takes forever with millions of seeds
-            //}
-
-            //await Task.WhenAll(tasks);
             // find the lowest seedLocation
-            //Console.WriteLine(seedLocations.Min());
+            Console.WriteLine($"{lowestLocation} is the lowest Location found");
+        }
+
+        private void SolvePartOne()
+        {
+            var input = GetInputStringArray();
+            seeds = GetSeeds(input);
+            maps = CreateMaps(input);
+
+            Parallel.ForEach(seeds, seed =>
+            {
+                ExecuteSeedMapping(seed, maps);
+            });
+
+            // find the lowest seedLocation
             Console.WriteLine($"{lowestLocation} is the lowest Location found");
         }
 
