@@ -16,8 +16,15 @@ namespace AdventOfCode2023.Puzzles.day5
     {
         private List<long> seeds;
         private List<Map> maps;
+        private List<SeedRange> seedsRange;
         long lowestLocation = long.MaxValue;
         private string testInput = "seeds: 79 14 55 13\r\n\r\nseed-to-soil map:\r\n50 98 2\r\n52 50 48\r\n\r\nsoil-to-fertilizer map:\r\n0 15 37\r\n37 52 2\r\n39 0 15\r\n\r\nfertilizer-to-water map:\r\n49 53 8\r\n0 11 42\r\n42 0 7\r\n57 7 4\r\n\r\nwater-to-light map:\r\n88 18 7\r\n18 25 70\r\n\r\nlight-to-temperature map:\r\n45 77 23\r\n81 45 19\r\n68 64 13\r\n\r\ntemperature-to-humidity map:\r\n0 69 1\r\n1 0 69\r\n\r\nhumidity-to-location map:\r\n60 56 37\r\n56 93 4";
+
+
+        char[] spaceOrHyphen = [' ', '-'];
+        string type = "", destType = "";
+        Dictionary<string, string> mappingTypes = [];
+        List<(string sourceType, long sourceFrom, long sourceTo, long destOffset)> mappings = [];
 
         public PlantingSeeds(string input) : base(input)
         {
@@ -31,22 +38,119 @@ namespace AdventOfCode2023.Puzzles.day5
         {
             SolvePartOne();
             // TODO PartTwo should give the correct answer but will take hours to calculate
-            //SolvePartTwo();
+            SolvePartTwo();
         }
 
         private void SolvePartTwo()
         {
             var input = GetInputStringArray();
-            seeds = GetSeedRange(input);
-            maps = CreateMaps(input);
 
-            Parallel.ForEach(seeds, seed =>
+            foreach (string line in input[2..])
             {
-                ExecuteSeedMapping(seed, maps);
-            });
+                if (line == "") continue;
+                if (line.Contains('-'))
+                {
+                    string[] words = line.Split(spaceOrHyphen, StringSplitOptions.RemoveEmptyEntries);
+                    type = words[0]; destType = words[2];
+                    mappingTypes[type] = destType;
+                }
+                else
+                {
+                    long[] numbers = Array.ConvertAll(line.Split([' ']), Convert.ToInt64);
+                    mappings.Add((type, numbers[1], numbers[1] + numbers[2] - 1, numbers[0] - numbers[1]));
+                }
+            }
+            //seedsRange = GetSeedRanges(input);
+            //seeds = GetSeedsFromRange(seedsRange);
+
+
+            long[] seeds = Array.ConvertAll(input[0].Split(' ')[1..], Convert.ToInt64);
+
+
+            //maps = CreateMaps(input);
+
+            //Parallel.ForEach(seeds, seed =>
+            //{
+            //    ExecuteSeedRangeMapping(seed, seedsRange, maps);
+            //});
+
+            List<(long from, long to)> ranges = [];
+            for (int i = 0; i < seeds.Length; i += 2)
+            {
+                // Seedrange Start/End
+                ranges.Add((seeds[i], seeds[i] + seeds[i + 1] - 1));
+            }
+            type = "seed";
+            do
+            {
+                ranges = GetDestRanges(ranges.OrderBy(r => r.from).ToList(), [.. mappings.Where(m => m.sourceType == type).OrderBy(m => m.sourceFrom)]);
+                type = mappingTypes[type];
+            } while (type != "location");
+            lowestLocation = Math.Min(lowestLocation, ranges.Min(r => r.from));
 
             // find the lowest seedLocation
             Console.WriteLine($"{lowestLocation} is the lowest Location found");
+        }
+        List<(long, long)> GetDestRanges(List<(long, long)> sourceRanges, List<(string sourceType, long sourceFrom, long sourceTo, long destOffset)> mappings)
+        {// TODO refactoring: Methode könnte Klassen verwenden
+            List<(long, long)> result = [];
+            foreach ((long, long) sourceRange in sourceRanges)
+            {
+                (long from, long to) testRange = sourceRange;
+                bool allDone = false;
+                do
+                {
+                    // Find the last mapping where the start is less than the start of the range
+                    (string sourceType, long sourceFrom, long sourceTo, long destOffset)
+                        = mappings.LastOrDefault(m => m.sourceFrom <= testRange.from && testRange.from <= m.sourceTo, ("", 0, 0, 0));
+                    // There aren't any
+                    if (sourceType == "")
+                    {
+                        // Does the end fit in any mappings?
+                        (sourceType, sourceFrom, sourceTo, destOffset)
+                            = mappings.LastOrDefault(m => m.sourceFrom <= testRange.to && testRange.to <= m.sourceTo, ("", 0, 0, 0));
+                        if (sourceType == "")
+                        {
+                            // If there aren't any, add the whole range and end
+                            result.Add(testRange);
+                            allDone = true;
+                        }
+                        else
+                        {
+                            // Add the start of the range, set the range to the end and continue
+                            result.Add((testRange.from, sourceFrom - 1));
+                            testRange = (sourceFrom, testRange.to);
+                        }
+                    }
+                    // If the end of the mapping is greater than the end of the range, add the whole range (with offset) and end
+                    else if (sourceTo >= testRange.to)
+                    {
+                        result.Add((testRange.from + destOffset, testRange.to + destOffset));
+                        allDone = true;
+                    }
+                    // Otherwise, add from the start of the range to the end of the mapping (with offsets), set the range start to the mapping end plus one and continue
+                    else
+                    {
+                        //sourceNumber = sourceNumber + destFrom - sourceFrom;
+                        result.Add((testRange.from + destOffset, sourceTo + destOffset));
+                        testRange = (sourceTo + 1, testRange.to);
+                    }
+                } while (!allDone);
+            }
+            return result;
+        }
+
+        private List<long> GetSeedsFromRange(List<SeedRange> seedsRange)
+        {
+            var seeds = new List<long>();
+            foreach (var seedRange in seedsRange)
+            {
+                for (long j = 0; j <= seedRange.Range; j++)
+                {// this takes alot of time... faster solution?
+                    seeds.Add(seedRange.Seed + j);
+                }
+            }
+            return seeds;
         }
 
         private void SolvePartOne()
@@ -159,21 +263,21 @@ namespace AdventOfCode2023.Puzzles.day5
 
             return seeds;
         }
-        private List<long> GetSeedRange(string[] input)
-        { // this takes alot of time, but is bearable... faster solution?
-            var seeds = new List<long>();
+        private List<SeedRange> GetSeedRanges(string[] input)
+        {
+            var seedRanges = new List<SeedRange>();
             var split = input[0].Split(' ');
             for (int i = 1; i < split.Length; i += 2)
             {
                 var seedRange = new SeedRange(long.Parse(split[i]), long.Parse(split[i + 1]));
-
-                for (long j = 0; j <= seedRange.Range; j++)
-                {
-                    seeds.Add(seedRange.Seed + j);
-                }
+                seedRanges.Add(seedRange);
+                //for (long j = 0; j <= seedRange.Range; j++)
+                //{// this takes alot of time, but is bearable... faster solution?
+                //    seeds.Add(seedRange.Seed + j);
+                //}
             }
 
-            return seeds;
+            return seedRanges;
         }
     }
 }
