@@ -1,5 +1,6 @@
 ﻿using AdventOfCode2023.Factories;
 using AdventOfCode2023.models;
+using AdventOfCode2023.models.abstraction;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,21 +10,20 @@ using System.Windows.Markup;
 
 namespace AdventOfCode2023.Puzzles
 {
-    public class Puzzle3 : IPuzzle
+    public class CubeConundrum : PuzzleBase
     {
-        public Puzzle3(string input)
+        public CubeConundrum(string input) : base(input)
         {
-            Input = input;
         }
-        public string Input { get; set; }
+
         public CubeGame CurrentGame { get; set; }
         public List<CubeGame> Games { get; set; } = new List<CubeGame>();
 
-        public void Solve()
+        public override void Solve()
         {
             int sumOfIds = 0;
             int sumOfCubePower = 0;
-            var array = InputFactory.Instance.CreateInputStringArray(Input);
+            var array = GetInputStringArray();
             string testInputPossible = "Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green";
             string testInputImpossible = "Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red";
             //Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
@@ -52,8 +52,9 @@ namespace AdventOfCode2023.Puzzles
 
                 sumOfCubePower += game.CubePower;
             }
-            Console.WriteLine(sumOfCubePower);
-            Console.WriteLine(sumOfIds);
+            
+            Console.WriteLine("SumOfIds:" + sumOfIds);
+            Console.WriteLine("CubePower:" + sumOfCubePower);
         }
 
         private void CreateGameFromInput(string gameInput)

@@ -20,7 +20,7 @@ namespace AdventOfCode2023
     {
         static void Main(string[] args)
         {
-            int day = 1;
+            int day = 2;
             string path = $@"{AppDomain.CurrentDomain.BaseDirectory}day{day}_input.txt";
             var input = InputFactory.Instance.GetInputString(path);
 
@@ -28,8 +28,8 @@ namespace AdventOfCode2023
             switch (day)
             {
                 case 1: new Trebuchet(input); break;
-                case 2: new Puzzle2(input); break;
-                case 3: new Puzzle3(input); break;
+                case 2: new CubeConundrum(input); break;
+                case 3: //new CubeConundrum(input); break;
                 case 4: new Puzzle4(input); break;
                 case 5: new Puzzle5(input); break;
                 case 6: new Puzzle6(input); break;
