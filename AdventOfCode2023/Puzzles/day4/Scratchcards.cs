@@ -1,6 +1,7 @@
 ﻿using AdventOfCode2023.Factories;
 using AdventOfCode2023.Handler;
 using AdventOfCode2023.models;
+using AdventOfCode2023.models.abstraction;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +12,11 @@ using System.Threading.Tasks;
 
 namespace AdventOfCode2023.Puzzles.day4
 {
-    public class Puzzle5 : IPuzzle
+    public class Scratchcards : PuzzleBase
     {
         private static readonly object listLock = new object();
         private int sumPart1 = 0;
         private int sumPart2 = 0;
-        public string Input { get; set; }
         private string testInput =
                 "Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53\r\n" +
                 "Card 2: 13 32 20 16 61 | 61 30 68 82 17 32 24 19\r\n" +
@@ -24,15 +24,20 @@ namespace AdventOfCode2023.Puzzles.day4
                 "Card 4: 41 92 73 84 69 | 59 84 76 51 58  5 54 83\r\n" +
                 "Card 5: 87 83 26 28 32 | 88 30 70 12 93 22 82 36\r\n" +
                 "Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11";
-        List<string> inputCopy;
+        private List<string> inputCopy;
         private List<Card> cards = new List<Card>();
         private List<Card> cardInfos = new List<Card>();
-        public Puzzle5(string input)
+
+        public Scratchcards(string input) : base(input)
         {
-            Input = input;
         }
 
-        public async void Solve()
+        protected override string GetDefaultInputFromDerived()
+        {
+            return testInput;
+        }
+
+        public override async void Solve()
         {
             string[] input;
             if (Input is null)
@@ -86,8 +91,8 @@ namespace AdventOfCode2023.Puzzles.day4
                 sumPart2 += 1;
                 sumPart2 += GetSumOfCard(card);
             }
-            Console.WriteLine(sumPart2);
-            // answer 7013204
+            Console.WriteLine("sumPart1: " + sumPart1);
+            Console.WriteLine("sumPart2: " + sumPart2);
         }
 
         private async Task<Card> CreateCardAsync(string input, int index)
