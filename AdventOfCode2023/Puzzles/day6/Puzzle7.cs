@@ -1,6 +1,5 @@
 ﻿using AdventOfCode2023.Factories;
 using AdventOfCode2023.models;
-using AdventOfCode2023.models.abstraction;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,22 +10,27 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace AdventOfCode2023.Puzzles.day6
 {
-    public class ToyRace : PuzzleBase
+    public class Puzzle7 : IPuzzle // TODO PuzzleBase this interface does almost nothing
     {
         private string testInput = "Time:      7  15   30\r\nDistance:  9  40  200";
-
-        public ToyRace(string input) : base(input)
+        public Puzzle7(string input)
         {
+            Input = input;
         }
+        public string Input { get; set; }
 
-        protected override string GetDefaultInputFromDerived()
-        {
-            return testInput;
-        }
 
-        public override void Solve()
+        public void Solve()
         {
-            var input = GetInputStringArray();
+            string[] input;
+            if (Input is null)
+            {
+                input = InputFactory.Instance.CreateInputStringArray(testInput);
+            }
+            else
+            {
+                input = InputFactory.Instance.CreateInputStringArray(Input);
+            }
 
             SolvePartOne(input);
 

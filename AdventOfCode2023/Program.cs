@@ -1,6 +1,5 @@
 ﻿using AdventOfCode2023.Factories;
 using AdventOfCode2023.models;
-using AdventOfCode2023.models.abstraction;
 using AdventOfCode2023.Puzzles;
 using AdventOfCode2023.Puzzles.day4;
 using AdventOfCode2023.Puzzles.day5;
@@ -22,8 +21,6 @@ namespace AdventOfCode2023
         {
             string path = $@"{AppDomain.CurrentDomain.BaseDirectory}input.txt";
             var input = InputFactory.Instance.GetInputString(path);
-
-            //TODO refactor old puzzles
             //Puzzle1 puzzle1 = new Puzzle1(input);
             //puzzle1.Solve();
             //Puzzle2 puzzle2 = new Puzzle2(input);
@@ -36,8 +33,8 @@ namespace AdventOfCode2023
             //puzzle5.Solve();
             //Puzzle6 puzzle6 = new Puzzle6(input);
             //puzzle6.Solve();
-
-            new ToyRace(input);
+            Puzzle7 puzzle7 = new Puzzle7(input);
+            puzzle7.Solve();
 
             Console.ReadLine();
         }

@@ -11,8 +11,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Helper\**" />
+    <Compile Remove="models\abstraction\**" />
     <EmbeddedResource Remove="Helper\**" />
+    <EmbeddedResource Remove="models\abstraction\**" />
     <None Remove="Helper\**" />
+    <None Remove="models\abstraction\**" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
