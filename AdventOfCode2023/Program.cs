@@ -37,7 +37,7 @@ namespace AdventOfCode2023
             //Puzzle6 puzzle6 = new Puzzle6(input);
             //puzzle6.Solve();
 
-            PuzzleBase toyRace = new ToyRace(input);
+            new ToyRace(input);
 
             Console.ReadLine();
         }
