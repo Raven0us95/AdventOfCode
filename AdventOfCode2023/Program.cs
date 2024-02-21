@@ -24,7 +24,6 @@ namespace AdventOfCode2023
             string path = $@"{AppDomain.CurrentDomain.BaseDirectory}day{day}_input.txt";
             var input = InputFactory.Instance.GetInputString(path);
 
-            //TODO refactor old puzzles
             switch (day)
             {
                 case 1: new Trebuchet(input); break;
