@@ -1,6 +1,7 @@
 ﻿using AdventOfCode2023.Factories;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,13 +15,12 @@ namespace AdventOfCode2023.models.abstraction
             Input = input ?? GetDefaultInputFromDerived();
             Solve();
         }
+        public string Input { get; set; }
 
         protected virtual string GetDefaultInputFromDerived()
         {
             throw new NotImplementedException($"Derived class must override {nameof(GetDefaultInputFromDerived)}");
         }
-
-        public string Input { get; set; }
 
         public string[] GetInputStringArray()
         {
