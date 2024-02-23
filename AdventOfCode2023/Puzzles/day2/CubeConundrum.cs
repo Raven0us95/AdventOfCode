@@ -57,6 +57,11 @@ namespace AdventOfCode2023.Puzzles
             Console.WriteLine("CubePower:" + sumOfCubePower);
         }
 
+        protected override string GetDefaultInputFromDerived()
+        {
+            throw new NotImplementedException();
+        }
+
         private void CreateGameFromInput(string gameInput)
         {
             var splitGameInfo = gameInput.Split(':');

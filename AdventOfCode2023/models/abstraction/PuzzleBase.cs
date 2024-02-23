@@ -17,11 +17,6 @@ namespace AdventOfCode2023.models.abstraction
         }
         public string Input { get; set; }
 
-        protected virtual string GetDefaultInputFromDerived()
-        {
-            throw new NotImplementedException($"Derived class must override {nameof(GetDefaultInputFromDerived)}");
-        }
-
         public string[] GetInputStringArray()
         {
             return InputFactory.Instance.CreateInputStringArray(Input);
@@ -30,9 +25,7 @@ namespace AdventOfCode2023.models.abstraction
         {
             return InputFactory.Instance.CreateInput2DCharArray(Input);
         }
-        public virtual void Solve()
-        {
-            var input = GetInputStringArray();
-        }
+        public abstract void Solve();
+        protected abstract string GetDefaultInputFromDerived();
     }
 }

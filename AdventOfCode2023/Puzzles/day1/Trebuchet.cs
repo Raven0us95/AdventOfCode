@@ -152,5 +152,10 @@ namespace AdventOfCode2023.Puzzles
             }
             Console.WriteLine(sum);
         }
+
+        protected override string GetDefaultInputFromDerived()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
