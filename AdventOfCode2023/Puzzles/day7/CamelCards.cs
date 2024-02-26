@@ -20,7 +20,7 @@ namespace AdventOfCode2023.Puzzles.day7
             handManager.CreateHandsFromInput(input);
             handManager.OrderHandsByStrength();
             handManager.MultiplyHandsBidByStrength();
-            Console.WriteLine($"{handManager.GetTotalWinnings()}");
+            Console.WriteLine($"Total Winnings: {handManager.GetTotalWinnings()}");
         }
 
         protected override string GetDefaultInputFromDerived()
