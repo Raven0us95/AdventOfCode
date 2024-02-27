@@ -15,7 +15,7 @@ namespace AdventOfCode2023.Puzzles.day7
         private string[] handTypes = new[] { "FiveOfAKind", "FourOfAKind", "FullHouse", "ThreeOfAKind", "TwoPair", "OnePair", "HighCard" };
         public int TotalWinnings = 0;
 
-        private void SetHandType(Hand hand)
+        private void SetHandType(Hand hand, bool useJoker)
         {
             if (hand is null)
             {
@@ -34,76 +34,66 @@ namespace AdventOfCode2023.Puzzles.day7
             // High card, where all cards' labels are distinct: 23456
             #endregion
 
-            var group = hand.Cards.GroupBy(c => c);
-            if (group.Any(group => group.Count() == 5))
-            {// five of a kind
-                hand.Type = handTypes[0];
-                return;
+            if (useJoker)
+            {
+                // todo Joker mapping
             }
-            if (group.Any(group => group.Count() == 4))
-            {// four of a kind
-                hand.Type = handTypes[1];
-                return;
+            else
+            {
+                var group = hand.Cards.GroupBy(c => c);
+                if (group.Any(group => group.Count() == 5))
+                {// five of a kind
+                    hand.Type = handTypes[0];
+                    return;
+                }
+                if (group.Any(group => group.Count() == 4))
+                {// four of a kind
+                    hand.Type = handTypes[1];
+                    return;
+                }
+                if (group.Any(group => group.Count() == 2) && group.Any(group => group.Count() == 3))
+                {// full house
+                    hand.Type = handTypes[2];
+                    return;
+                }
+                if (group.Any(group => group.Count() == 3))
+                {// three of a kind
+                    hand.Type = handTypes[3];
+                    return;
+                }
+                if (group.Count(group => group.Count() == 2) == 2)
+                {// two pair
+                    hand.Type = handTypes[4];
+                    return;
+                }
+                if (group.Count(group => group.Count() == 2) == 1)
+                {// one pair
+                    hand.Type = handTypes[5];
+                    return;
+                }
+                // high card
+                hand.Type = handTypes[6];
             }
-            if (group.Any(group => group.Count() == 2) && group.Any(group => group.Count() == 3))
-            {// full house
-                hand.Type = handTypes[2];
-                return;
-            }
-            if (group.Any(group => group.Count() == 3))
-            {// three of a kind
-                hand.Type = handTypes[3];
-                return;
-            }
-            if (group.Count(group => group.Count() == 2) == 2)
-            {// two pair
-                hand.Type = handTypes[4];
-                return;
-            }
-            if (group.Count(group => group.Count() == 2) == 1)
-            {// one pair
-                hand.Type = handTypes[5];
-                return;
-            }
-            // high card
-            hand.Type = handTypes[6];
         }
-        public void OrderHandsByStrength()
+        public void OrderHandsByStrength(bool useJoker)
         {
             // SetHandType
-            //Parallel.ForEach(Hands, SetHandType);
-            foreach (var hand in Hands)
-            {
-                SetHandType(hand);
-            }
-
             // lowest to highest Strength (ascending)
             // Order Hands by Type
             // Order Subset of same Types by highest first card in hand, if first cards are the same look for next char..
-
-            //var copy = Hands.OrderByDescending(x => Array.IndexOf(handTypes, x.Type)).ToList();
-            //var copyy = copy.OrderByDescending(x => x, comparer).ToList();
-
-            var comparer = new HandComparer(handTypes, cardStrengthOrder);
-            Hands = Hands.OrderByDescending(x => x, comparer).ToList();
-
-            //Hands = SortHands(Hands);
-        }
-        public List<Hand> SortHands(List<Hand> hands)
-        {
-            // Group hands by type
-            var groupedHands = hands.GroupBy(hand => hand.Type);
-
-            // Sort each group by cards
-            var sortedHands = new List<Hand>();
-            foreach (var group in groupedHands)
+            foreach (var hand in Hands)
             {
-                var sortedGroup = group.OrderByDescending(hand => hand.Cards, new CustomComparer(cardStrengthOrder));
-                sortedHands.AddRange(sortedGroup);
+                SetHandType(hand, useJoker);
             }
-
-            sortedHands = sortedHands.OrderByDescending(x => Array.IndexOf(handTypes, x.Type)).ToList();
-            return sortedHands;
+            if (useJoker)
+            {
+                // TODO Joker Comparer
+            }
+            else
+            {
+                var comparer = new HandComparer(handTypes, cardStrengthOrder);
+                Hands = Hands.OrderByDescending(x => x, comparer).ToList();
+            }
         }
         public void CalculateTotalWinnings()
         {
@@ -122,39 +112,7 @@ namespace AdventOfCode2023.Puzzles.day7
             }
         }
     }
-    class CustomComparer : IComparer<string>
-    {
-        private readonly Dictionary<char, int> customOrderMap;
-
-        public CustomComparer(char[] customOrder)
-        {
-            customOrderMap = customOrder.Select((c, i) => (c, i)).ToDictionary(x => x.c, x => x.i);
-        }
-
-        public int Compare(string x, string y)
-        {
-            // Iterate through characters in the strings simultaneously
-            for (int i = 0; i < Math.Min(x.Length, y.Length); i++)
-            {
-                char charX = x[i];
-                char charY = y[i];
-
-                // Compare characters based on their position in the custom order
-                int orderX = customOrderMap[charX];
-                int orderY = customOrderMap[charY];
-
-                if (orderX != orderY)
-                {
-                    // If characters have different orders, return the comparison result
-                    return orderX.CompareTo(orderY);
-                }
-            }
-
-            // If one string is a prefix of the other, the shorter string comes first
-            return x.Length.CompareTo(y.Length);
-        }
-    }
-    public class HandComparer : IComparer<Hand>
+    internal class HandComparer : IComparer<Hand>
     {
         private readonly string[] types;
         private readonly char[] customOrder;

@@ -9,7 +9,6 @@ namespace AdventOfCode2023.Puzzles.day7
 {
     public class CamelCards : PuzzleBase
     {
-        private HandManager handManager = new HandManager();
         public CamelCards(string input) : base(input)
         {
         }
@@ -17,14 +16,24 @@ namespace AdventOfCode2023.Puzzles.day7
         public override void Solve()
         {
             var input = GetInputStringArray();
-            handManager.CreateHandsFromInput(input);
             
-            SolvePartOne();
+            SolvePartOne(input);
+            SolvePartTwo(input);
         }
 
-        private void SolvePartOne()
+        private void SolvePartTwo(string[] input)
         {
-            handManager.OrderHandsByStrength();
+            var handManager = new HandManager();
+            handManager.CreateHandsFromInput(input);
+            handManager.OrderHandsByStrength(true);
+            handManager.CalculateTotalWinnings();
+        }
+
+        private void SolvePartOne(string[] input)
+        {
+            var handManager = new HandManager();
+            handManager.CreateHandsFromInput(input);
+            handManager.OrderHandsByStrength(false);
             handManager.CalculateTotalWinnings();
             Console.WriteLine($"Total Winnings: {handManager.TotalWinnings}");
         }
