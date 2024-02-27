@@ -13,6 +13,7 @@ namespace AdventOfCode2023.Puzzles.day7
         public List<Hand> Hands { get; set; } = new List<Hand>();
         private char[] cardStrengthOrder = new[] { 'A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2' };
         private string[] handTypes = new[] { "FiveOfAKind", "FourOfAKind", "FullHouse", "ThreeOfAKind", "TwoPair", "OnePair", "HighCard" };
+        public int TotalWinnings = 0;
 
         private void SetHandType(Hand hand)
         {
@@ -47,6 +48,7 @@ namespace AdventOfCode2023.Puzzles.day7
             if (group.Any(group => group.Count() == 2) && group.Any(group => group.Count() == 3))
             {// full house
                 hand.Type = handTypes[2];
+                return;
             }
             if (group.Any(group => group.Count() == 3))
             {// three of a kind
@@ -84,13 +86,31 @@ namespace AdventOfCode2023.Puzzles.day7
 
             var comparer = new HandComparer(handTypes, cardStrengthOrder);
             Hands = Hands.OrderByDescending(x => x, comparer).ToList();
+
+            //Hands = SortHands(Hands);
         }
-        public void MultiplyHandsBidByRank()
+        public List<Hand> SortHands(List<Hand> hands)
+        {
+            // Group hands by type
+            var groupedHands = hands.GroupBy(hand => hand.Type);
+
+            // Sort each group by cards
+            var sortedHands = new List<Hand>();
+            foreach (var group in groupedHands)
+            {
+                var sortedGroup = group.OrderByDescending(hand => hand.Cards, new CustomComparer(cardStrengthOrder));
+                sortedHands.AddRange(sortedGroup);
+            }
+
+            sortedHands = sortedHands.OrderByDescending(x => Array.IndexOf(handTypes, x.Type)).ToList();
+            return sortedHands;
+        }
+        public void CalculateTotalWinnings()
         {
             for (int i = 0; i < Hands.Count; i++)
             {
                 Hands[i].Rank = i + 1;
-                Hands[i].BidAmount = Hands[i].Rank * Hands[i].BidAmount;
+                TotalWinnings += Hands[i].Rank * Hands[i].BidAmount;
             }
         }
         public void CreateHandsFromInput(string[] input)
@@ -101,14 +121,37 @@ namespace AdventOfCode2023.Puzzles.day7
                 Hands.Add(new Hand(split[0], int.Parse(split[1])));
             }
         }
-        public int GetTotalWinnings()
+    }
+    class CustomComparer : IComparer<string>
+    {
+        private readonly Dictionary<char, int> customOrderMap;
+
+        public CustomComparer(char[] customOrder)
         {
-            int sum = 0;
-            foreach (var hand in Hands)
+            customOrderMap = customOrder.Select((c, i) => (c, i)).ToDictionary(x => x.c, x => x.i);
+        }
+
+        public int Compare(string x, string y)
+        {
+            // Iterate through characters in the strings simultaneously
+            for (int i = 0; i < Math.Min(x.Length, y.Length); i++)
             {
-                sum += hand.BidAmount;
+                char charX = x[i];
+                char charY = y[i];
+
+                // Compare characters based on their position in the custom order
+                int orderX = customOrderMap[charX];
+                int orderY = customOrderMap[charY];
+
+                if (orderX != orderY)
+                {
+                    // If characters have different orders, return the comparison result
+                    return orderX.CompareTo(orderY);
+                }
             }
-            return sum;
+
+            // If one string is a prefix of the other, the shorter string comes first
+            return x.Length.CompareTo(y.Length);
         }
     }
     public class HandComparer : IComparer<Hand>
@@ -131,8 +174,8 @@ namespace AdventOfCode2023.Puzzles.day7
                 return typeComparison;
             }
             // if types are equal compare the cards string of each hand based on the customOrder array
-
-            return CompareByCards(x.Cards, y.Cards);
+            var value = CompareByCards(x.Cards, y.Cards);
+            return value;
         }
 
         private int CompareByCards(string cards1, string cards2)
@@ -149,7 +192,8 @@ namespace AdventOfCode2023.Puzzles.day7
             }
 
             // If the cards strings are equal up to the length of the shortest one, compare their lengths
-            return cards1.Length.CompareTo(cards2.Length);
+            var value = cards1.Length.CompareTo(cards2.Length);
+            return value;
         }
 
         private int CompareByHandType(string type1, string type2)
@@ -159,5 +203,4 @@ namespace AdventOfCode2023.Puzzles.day7
             return indexX.CompareTo(indexY);
         }
     }
-
 }

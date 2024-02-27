@@ -16,18 +16,22 @@ namespace AdventOfCode2023.Puzzles.day7
 
         public override void Solve()
         {
-            // TODO check mapping again.. result is too high
-            // unit tests, narrow down input to find the issue...
             var input = GetInputStringArray();
             handManager.CreateHandsFromInput(input);
+            
+            SolvePartOne();
+        }
+
+        private void SolvePartOne()
+        {
             handManager.OrderHandsByStrength();
-            handManager.MultiplyHandsBidByRank();
-            Console.WriteLine($"Total Winnings: {handManager.GetTotalWinnings()}");
+            handManager.CalculateTotalWinnings();
+            Console.WriteLine($"Total Winnings: {handManager.TotalWinnings}");
         }
 
         protected override string GetDefaultInputFromDerived()
         {
-            return "32T3K 765\r\nT55J5 684\r\nKK677 28\r\nKTJJT 220\r\nQQQJA 483";
+            return "AAAAA 2\r\n22222 3\r\nAAAAK 5\r\n22223 7\r\nAAAKK 11\r\n22233 13\r\nAAAKQ 17\r\n22234 19\r\nAAKKQ 23\r\n22334 29\r\nAAKQJ 31\r\n22345 37\r\nAKQJT 41\r\n23456 43";
         }
     }
 }
