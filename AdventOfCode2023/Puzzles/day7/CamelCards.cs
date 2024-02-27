@@ -16,10 +16,12 @@ namespace AdventOfCode2023.Puzzles.day7
 
         public override void Solve()
         {
+            // TODO check mapping again.. result is too high
+            // unit tests, narrow down input to find the issue...
             var input = GetInputStringArray();
             handManager.CreateHandsFromInput(input);
             handManager.OrderHandsByStrength();
-            handManager.MultiplyHandsBidByStrength();
+            handManager.MultiplyHandsBidByRank();
             Console.WriteLine($"Total Winnings: {handManager.GetTotalWinnings()}");
         }
 

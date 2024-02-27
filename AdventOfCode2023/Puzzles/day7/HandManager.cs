@@ -39,8 +39,6 @@ namespace AdventOfCode2023.Puzzles.day7
                 hand.Type = handTypes[0];
                 return;
             }
-            // probably foreach card in hand.Cards
-            //var cardArray = hand.Cards.ToArray();
             if (group.Any(group => group.Count() == 4))
             {// four of a kind
                 hand.Type = handTypes[1];
@@ -71,7 +69,11 @@ namespace AdventOfCode2023.Puzzles.day7
         public void OrderHandsByStrength()
         {
             // SetHandType
-            Parallel.ForEach(Hands, SetHandType);
+            //Parallel.ForEach(Hands, SetHandType);
+            foreach (var hand in Hands)
+            {
+                SetHandType(hand);
+            }
 
             // lowest to highest Strength (ascending)
             // Order Hands by Type
@@ -83,18 +85,19 @@ namespace AdventOfCode2023.Puzzles.day7
             var comparer = new HandComparer(handTypes, cardStrengthOrder);
             Hands = Hands.OrderByDescending(x => x, comparer).ToList();
         }
-        public void MultiplyHandsBidByStrength()
+        public void MultiplyHandsBidByRank()
         {
             for (int i = 0; i < Hands.Count; i++)
             {
-                Hands[i].BidAmount = (i + 1) * Hands[i].BidAmount;
+                Hands[i].Rank = i + 1;
+                Hands[i].BidAmount = Hands[i].Rank * Hands[i].BidAmount;
             }
         }
         public void CreateHandsFromInput(string[] input)
         {
-            foreach (var hand in input)
+            foreach (var line in input)
             {
-                var split = hand.Split();
+                var split = line.Split();
                 Hands.Add(new Hand(split[0], int.Parse(split[1])));
             }
         }
