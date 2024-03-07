@@ -12,6 +12,7 @@ namespace AdventOfCode2023.Puzzles.day7
     {
         public List<Hand> Hands { get; set; } = new List<Hand>();
         private char[] cardStrengthOrder = new[] { 'A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2' };
+        private char[] jokerStrengthOrder = new[] { 'A', 'K', 'Q', 'T', '9', '8', '7', '6', '5', '4', '3', '2', 'J' };
         private string[] handTypes = new[] { "FiveOfAKind", "FourOfAKind", "FullHouse", "ThreeOfAKind", "TwoPair", "OnePair", "HighCard" };
         public int TotalWinnings = 0;
 
@@ -34,47 +35,62 @@ namespace AdventOfCode2023.Puzzles.day7
             // High card, where all cards' labels are distinct: 23456
             #endregion
 
+            var handCopy = new Hand(hand.Cards, hand.BidAmount);
             if (useJoker)
             {
-                // todo Joker mapping
+                TransformJokers(handCopy);
             }
-            else
+
+            var group = handCopy.Cards.GroupBy(c => c);
+            if (group.Any(group => group.Count() == 5))
+            {// five of a kind
+                hand.Type = handTypes[0];
+                return;
+            }
+            if (group.Any(group => group.Count() == 4))
+            {// four of a kind
+                hand.Type = handTypes[1];
+                return;
+            }
+            if (group.Any(group => group.Count() == 2) && group.Any(group => group.Count() == 3))
+            {// full house
+                hand.Type = handTypes[2];
+                return;
+            }
+            if (group.Any(group => group.Count() == 3))
+            {// three of a kind
+                hand.Type = handTypes[3];
+                return;
+            }
+            if (group.Count(group => group.Count() == 2) == 2)
+            {// two pair
+                hand.Type = handTypes[4];
+                return;
+            }
+            if (group.Count(group => group.Count() == 2) == 1)
+            {// one pair
+                hand.Type = handTypes[5];
+                return;
+            }
+            // high card
+            hand.Type = handTypes[6];
+        }
+
+        private void TransformJokers(Hand hand)
+        {
+            // finde den Index der group mit den meisten Paaren (>2)
+            // wandle alle J in den gleichen char
+            var groupWithMostEntries = hand.Cards.GroupBy(c => c).OrderByDescending(x => x.Count()).FirstOrDefault();
+            if (groupWithMostEntries.Contains('J'))
             {
-                var group = hand.Cards.GroupBy(c => c);
-                if (group.Any(group => group.Count() == 5))
-                {// five of a kind
-                    hand.Type = handTypes[0];
-                    return;
-                }
-                if (group.Any(group => group.Count() == 4))
-                {// four of a kind
-                    hand.Type = handTypes[1];
-                    return;
-                }
-                if (group.Any(group => group.Count() == 2) && group.Any(group => group.Count() == 3))
-                {// full house
-                    hand.Type = handTypes[2];
-                    return;
-                }
-                if (group.Any(group => group.Count() == 3))
-                {// three of a kind
-                    hand.Type = handTypes[3];
-                    return;
-                }
-                if (group.Count(group => group.Count() == 2) == 2)
-                {// two pair
-                    hand.Type = handTypes[4];
-                    return;
-                }
-                if (group.Count(group => group.Count() == 2) == 1)
-                {// one pair
-                    hand.Type = handTypes[5];
-                    return;
-                }
-                // high card
-                hand.Type = handTypes[6];
+                groupWithMostEntries = hand.Cards.GroupBy(c => c).Where(g => g.Key != 'J').OrderByDescending(x => x.Count()).FirstOrDefault();
+            }
+            if (hand.Cards.Contains('J') && groupWithMostEntries != null)
+            {
+                hand.Cards = hand.Cards.Replace('J', groupWithMostEntries.FirstOrDefault());
             }
         }
+
         public void OrderHandsByStrength(bool useJoker)
         {
             // SetHandType
@@ -87,7 +103,8 @@ namespace AdventOfCode2023.Puzzles.day7
             }
             if (useJoker)
             {
-                // TODO Joker Comparer
+                var comparer = new HandComparer(handTypes, jokerStrengthOrder);
+                Hands = Hands.OrderByDescending(x => x, comparer).ToList();
             }
             else
             {
