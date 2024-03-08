@@ -20,9 +20,19 @@ namespace AdventOfCode2023.Puzzles.day8
             var input = GetInputStringArray();
             instructions = input[0];
 
-            var currentNode = input[2];
+            SolvePartOne(input);
+            SolvePartTwo(input);
+        }
+
+        private void SolvePartTwo(string[] input)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void SolvePartOne(string[] input)
+        {
+            var currentNode = input.Skip(2).FirstOrDefault(x => x.StartsWith("AAA"));
             int i = 0;
-            // iteration solution takes forever...
             while (currentNode[0..3] != "ZZZ")
             {
                 if (instructions[i] == 'L')
@@ -42,6 +52,8 @@ namespace AdventOfCode2023.Puzzles.day8
             }
             Console.WriteLine($"Operation took {stepCount} Steps!");
         }
+
+        
 
         protected override string GetDefaultInputFromDerived()
         {
