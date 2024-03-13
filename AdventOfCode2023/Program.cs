@@ -2,6 +2,7 @@
 using AdventOfCode2023.models;
 using AdventOfCode2023.models.abstraction;
 using AdventOfCode2023.Puzzles;
+using AdventOfCode2023.Puzzles.day10;
 using AdventOfCode2023.Puzzles.day4;
 using AdventOfCode2023.Puzzles.day5;
 using AdventOfCode2023.Puzzles.day6;
@@ -23,7 +24,7 @@ namespace AdventOfCode2023
     {
         static void Main(string[] args)
         {
-            int day = 9;
+            int day = 10;
             string path = $@"{AppDomain.CurrentDomain.BaseDirectory}day{day}_input.txt";
             var input = InputFactory.Instance.GetInputString(path);
 
@@ -38,6 +39,7 @@ namespace AdventOfCode2023
                 case 7: new CamelCards(input); break;
                 case 8: new HauntedWasteland(input); break;
                 case 9: new MirageMaintenance(input); break;
+                case 10: new PipeMaze(input); break;
                 default:
                     break;
             }
