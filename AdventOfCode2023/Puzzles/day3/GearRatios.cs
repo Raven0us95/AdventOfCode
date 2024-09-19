@@ -97,7 +97,7 @@ namespace AdventOfCode2023.Puzzles
                     {
                         // visualize
                         //Console.WriteLine($"Position in square pattern: ({i}, {j}) - Character: {charArray[i, j]}");
-                        //PrintArray(charArray, i, j, centerX, centerY);
+                        PrintArray(charArray, i, j, centerX, centerY);
 
                         if (char.IsNumber(charArray[i, j]))
                         {

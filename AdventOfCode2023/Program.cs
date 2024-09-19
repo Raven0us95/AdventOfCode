@@ -24,7 +24,9 @@ namespace AdventOfCode2023
     {
         static void Main(string[] args)
         {
-            int day = 10;
+            Console.WriteLine("Please enter the current advent day.");
+            var dayInput = Console.ReadLine();
+            int.TryParse(dayInput, out int day);
             string path = $@"{AppDomain.CurrentDomain.BaseDirectory}day{day}_input.txt";
             var input = InputFactory.Instance.GetInputString(path);
 
