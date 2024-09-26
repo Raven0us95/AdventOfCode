@@ -9,6 +9,6 @@ namespace AdventOfCode2023.models
     public interface IPuzzle
     {
         string Input { get; set; }
-        void Solve();
+        void SolvePart1();
     }
 }

@@ -26,7 +26,7 @@ namespace AdventOfCode2023.Puzzles.day5
         Dictionary<string, string> mappingTypes = [];
         List<(string sourceType, long sourceFrom, long sourceTo, long destOffset)> mappings = [];
 
-        public PlantingSeeds(string input) : base(input)
+        public PlantingSeeds(string input, bool isPart2) : base(input, isPart2)
         {
         }
 
@@ -34,14 +34,22 @@ namespace AdventOfCode2023.Puzzles.day5
         {
             return testInput;
         }
-        public override void Solve()
+        public override void SolvePart1()
         {
-            SolvePartOne();
-            // TODO PartTwo should give the correct answer but will take hours to calculate
-            SolvePartTwo();
+            var input = GetInputStringArray();
+            seeds = GetSeeds(input);
+            maps = CreateMaps(input);
+
+            Parallel.ForEach(seeds, seed =>
+            {
+                ExecuteSeedMapping(seed, maps);
+            });
+
+            // find the lowest seedLocation
+            Console.WriteLine($"{lowestLocation} is the lowest Location found");
         }
 
-        private void SolvePartTwo()
+        public override void SolvePart2()
         {
             var input = GetInputStringArray();
 
@@ -151,21 +159,6 @@ namespace AdventOfCode2023.Puzzles.day5
                 }
             }
             return seeds;
-        }
-
-        private void SolvePartOne()
-        {
-            var input = GetInputStringArray();
-            seeds = GetSeeds(input);
-            maps = CreateMaps(input);
-
-            Parallel.ForEach(seeds, seed =>
-            {
-                ExecuteSeedMapping(seed, maps);
-            });
-
-            // find the lowest seedLocation
-            Console.WriteLine($"{lowestLocation} is the lowest Location found");
         }
 
         private void ExecuteSeedMapping(long seed, List<Map> maps)

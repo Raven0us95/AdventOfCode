@@ -31,7 +31,7 @@ namespace AdventOfCode2023.Puzzles
                 "...$.*....\r\n" +
                 ".664.598..";
 
-        public GearRatios(string input) : base(input)
+        public GearRatios(string input, bool isPart2) : base(input, isPart2)
         {
             Console.SetWindowSize(20, 15);
             //Console.SetBufferSize(1000, Int16.MaxValue-1);
@@ -43,7 +43,12 @@ namespace AdventOfCode2023.Puzzles
             return testInput;
         }
 
-        public override void Solve()
+        public override void SolvePart2()
+        {
+            throw new NotImplementedException("there is no Part2 here!");
+        }
+
+        public override void SolvePart1()
         {
             var schematic = GetInput2DCharArray();
 

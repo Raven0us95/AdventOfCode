@@ -15,7 +15,7 @@ namespace AdventOfCode2023.Puzzles.day6
     {
         private string testInput = "Time:      7  15   30\r\nDistance:  9  40  200";
 
-        public ToyRace(string input) : base(input)
+        public ToyRace(string input, bool isPart2) : base(input, isPart2)
         {
         }
 
@@ -24,39 +24,10 @@ namespace AdventOfCode2023.Puzzles.day6
             return testInput;
         }
 
-        public override void Solve()
+        public override void SolvePart1()
         {
             var input = GetInputStringArray();
 
-            SolvePartOne(input);
-
-            SolvePartTwo(input);
-        }
-
-        private void SolvePartTwo(string[] input)
-        {
-            // the input does not describe multiple races, it describes one long race. Ignore the white spaces on the input!
-            int result = 1;
-            Regex regex = new Regex(@"\b\d+\b");
-            var races = new List<Race>();
-            var times = regex.Matches(input[0]);
-            var distances = regex.Matches(input[1]);
-
-            string time = "";
-            string distance = "";
-            for(int i = 0;  i < times.Count; i++)
-            {
-                time += times[i].Value;
-                distance += distances[i].Value;
-            }
-
-            var race = new LongRace(long.Parse(time), long.Parse(distance));
-            race.SetWinningTimes();
-            Console.WriteLine(race.AmountOfWins);
-        }
-
-        private void SolvePartOne(string[] input)
-        {
             // PART ONE
             int result = 1;
             var races = CreateRaces(input);
@@ -72,6 +43,29 @@ namespace AdventOfCode2023.Puzzles.day6
             // multiply winning durations
             // sum of multiplication is the solution
             Console.WriteLine(result);
+        }
+
+        public override void SolvePart2()
+        {
+            var input = GetInputStringArray();
+            // the input does not describe multiple races, it describes one long race. Ignore the white spaces on the input!
+            int result = 1;
+            Regex regex = new Regex(@"\b\d+\b");
+            var races = new List<Race>();
+            var times = regex.Matches(input[0]);
+            var distances = regex.Matches(input[1]);
+
+            string time = "";
+            string distance = "";
+            for (int i = 0; i < times.Count; i++)
+            {
+                time += times[i].Value;
+                distance += distances[i].Value;
+            }
+
+            var race = new LongRace(long.Parse(time), long.Parse(distance));
+            race.SetWinningTimes();
+            Console.WriteLine(race.AmountOfWins);
         }
 
         private List<Race> CreateRaces(string[] input)

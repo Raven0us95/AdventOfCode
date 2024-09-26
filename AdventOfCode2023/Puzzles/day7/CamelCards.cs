@@ -9,34 +9,29 @@ namespace AdventOfCode2023.Puzzles.day7
 {
     public class CamelCards : PuzzleBase
     {
-        public CamelCards(string input) : base(input)
+        public CamelCards(string input, bool isPart2) : base(input, isPart2)
         {
         }
 
-        public override void Solve()
+        public override void SolvePart1()
         {
             var input = GetInputStringArray();
-            
-            SolvePartOne(input);
-            SolvePartTwo(input);
-        }
 
-        private void SolvePartTwo(string[] input)
-        {
-            var handManager = new HandManager();
-            handManager.CreateHandsFromInput(input);
-            handManager.OrderHandsByStrength(true);
-            handManager.CalculateTotalWinnings();
-            Console.WriteLine($"Total Winnings: {handManager.TotalWinnings}"); // 251385946
-        }
-
-        private void SolvePartOne(string[] input)
-        {
             var handManager = new HandManager();
             handManager.CreateHandsFromInput(input);
             handManager.OrderHandsByStrength(false);
             handManager.CalculateTotalWinnings();
             Console.WriteLine($"Total Winnings: {handManager.TotalWinnings}");
+        }
+        public override void SolvePart2()
+        {
+            var input = GetInputStringArray();
+
+            var handManager = new HandManager();
+            handManager.CreateHandsFromInput(input);
+            handManager.OrderHandsByStrength(true);
+            handManager.CalculateTotalWinnings();
+            Console.WriteLine($"Total Winnings: {handManager.TotalWinnings}"); // 251385946
         }
 
         protected override string GetDefaultInputFromDerived()

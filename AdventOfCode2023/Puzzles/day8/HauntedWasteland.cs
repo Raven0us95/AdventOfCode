@@ -12,21 +12,40 @@ namespace AdventOfCode2023.Puzzles.day8
     {
         private string instructions;
         private int stepCount = 0;
-        public HauntedWasteland(string input) : base(input)
+        public HauntedWasteland(string input, bool isPart2) : base(input, isPart2)
         {
         }
 
-        public override void Solve()
+        public override void SolvePart1()
         {
             var input = GetInputStringArray();
             instructions = input[0];
 
-            //SolvePartOne(input);
-            SolvePartTwo(input);
+            var currentNode = input.Skip(2).FirstOrDefault(x => x.StartsWith("AAA"));
+            int i = 0;
+            while (currentNode[0..3] != "ZZZ")
+            {
+                if (instructions[i] == 'L')
+                {
+                    currentNode = input.FirstOrDefault(x => x.StartsWith(currentNode[7..10]));
+                }
+                if (instructions[i] == 'R')
+                {
+                    currentNode = input.FirstOrDefault(x => x.StartsWith(currentNode[12..15]));
+                }
+                i++;
+                stepCount++;
+                if (i == instructions.Length)
+                {
+                    i = 0;
+                }
+            }
+            Console.WriteLine($"Operation took {stepCount} Steps!");
         }
-
-        private void SolvePartTwo(string[] input)
+        public override void SolvePart2()
         {
+            var input = GetInputStringArray();
+            instructions = input[0];
             // find starting nodes ending with A
             // start at the same time and find endnodes ending with Z
             //var startingNodes = input.Skip(2).Where(x => x[2] == 'A').ToList();
@@ -36,7 +55,7 @@ namespace AdventOfCode2023.Puzzles.day8
             Dictionary<string, (string, string)> startingNodes = nodes.Where(x => x.Key.Contains('A')).ToDictionary();
             long steps = 0;
             int i = 0;
-            List<string[]> paths = new List<string[]>(); 
+            List<string[]> paths = new List<string[]>();
             var nodeMapBuilder = new NodeMapBuilder(nodes);
 
             foreach (var node in startingNodes)
@@ -118,32 +137,6 @@ namespace AdventOfCode2023.Puzzles.day8
             }
             return nodes;
         }
-
-        private void SolvePartOne(string[] input)
-        {
-            var currentNode = input.Skip(2).FirstOrDefault(x => x.StartsWith("AAA"));
-            int i = 0;
-            while (currentNode[0..3] != "ZZZ")
-            {
-                if (instructions[i] == 'L')
-                {
-                    currentNode = input.FirstOrDefault(x => x.StartsWith(currentNode[7..10]));
-                }
-                if (instructions[i] == 'R')
-                {
-                    currentNode = input.FirstOrDefault(x => x.StartsWith(currentNode[12..15]));
-                }
-                i++;
-                stepCount++;
-                if (i == instructions.Length)
-                {
-                    i = 0;
-                }
-            }
-            Console.WriteLine($"Operation took {stepCount} Steps!");
-        }
-
-
 
         protected override string GetDefaultInputFromDerived()
         {

@@ -28,7 +28,7 @@ namespace AdventOfCode2023.Puzzles.day4
         private List<Card> cards = new List<Card>();
         private List<Card> cardInfos = new List<Card>();
 
-        public Scratchcards(string input) : base(input)
+        public Scratchcards(string input, bool isPart2) : base(input, isPart2)
         {
         }
 
@@ -37,7 +37,12 @@ namespace AdventOfCode2023.Puzzles.day4
             return testInput;
         }
 
-        public override async void Solve()
+        public override void SolvePart2()
+        {
+            throw new NotImplementedException("there is no Part2 here!");
+        }
+
+        public override async void SolvePart1()
         {
             string[] input;
             if (Input is null)

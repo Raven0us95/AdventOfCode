@@ -9,11 +9,11 @@ namespace AdventOfCode2023.Puzzles.day9
 {
     public class MirageMaintenance : PuzzleBase
     {
-        public MirageMaintenance(string input) : base(input)
+        public MirageMaintenance(string input, bool isPart2) : base(input, isPart2)
         {
         }
 
-        public override void Solve()
+        public override void SolvePart1()
         {
             int sum = 0;
             var input = GetInputStringArray();
@@ -22,6 +22,11 @@ namespace AdventOfCode2023.Puzzles.day9
                 int nextValue = FindNextValue(history, true);
                 sum += nextValue;
             }
+        }
+
+        public override void SolvePart2() 
+        { 
+            throw new NotImplementedException("there is no Part2 here!");
         }
 
         private int FindNextValue(string history, bool findPreviousValue)

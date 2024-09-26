@@ -10,10 +10,17 @@ namespace AdventOfCode2023.models.abstraction
 {
     public abstract class PuzzleBase : IPuzzle
     {
-        public PuzzleBase(string input)
+        public PuzzleBase(string input, bool isPart2)
         {
             Input = input ?? GetDefaultInputFromDerived();
-            Solve();
+            if (isPart2)
+            {
+                SolvePart2();
+            }
+            else
+            {
+                SolvePart1();
+            }
         }
         public string Input { get; set; }
 
@@ -25,7 +32,8 @@ namespace AdventOfCode2023.models.abstraction
         {
             return InputFactory.Instance.CreateInput2DCharArray(Input);
         }
-        public abstract void Solve();
+        public abstract void SolvePart1();
+        public abstract void SolvePart2();
         protected abstract string GetDefaultInputFromDerived();
     }
 }

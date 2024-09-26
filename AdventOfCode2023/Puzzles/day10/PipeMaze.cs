@@ -12,15 +12,20 @@ namespace AdventOfCode2023.Puzzles.day10
     public class PipeMaze : PuzzleBase
     {
         private MazeMap map = new MazeMap();
-        public PipeMaze(string input) : base(input)
+        public PipeMaze(string input, bool isPart2) : base(input, isPart2)
         {
         }
 
-        public override void Solve()
+        public override void SolvePart1()
         {
             var maze = GetInput2DCharArray();
 
             CreateMazeMap(maze);
+        }
+
+        public override void SolvePart2()
+        {
+            throw new NotImplementedException("there is no Part2 here!");
         }
 
         private void CreateMazeMap(char[,] maze)

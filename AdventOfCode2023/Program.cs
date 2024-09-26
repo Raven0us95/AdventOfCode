@@ -28,20 +28,32 @@ namespace AdventOfCode2023
             var dayInput = Console.ReadLine();
             int.TryParse(dayInput, out int day);
             string path = $@"{AppDomain.CurrentDomain.BaseDirectory}day{day}_input.txt";
+
             var input = InputFactory.Instance.GetInputString(path);
+
+            Console.WriteLine("Type 'y' if you want to solve Part2 of the Puzzle");
+            bool isPart2 = false;
+            var isPart2Input = Console.ReadLine();
+            if (isPart2Input != null) 
+            {
+                if (isPart2Input.FirstOrDefault().ToString().ToLower().Equals("y"))
+                {
+                    isPart2 = true;
+                }
+            }
 
             switch (day)
             {
-                case 1: new Trebuchet(input); break;
-                case 2: new CubeConundrum(input); break;
-                case 3: new GearRatios(input); break;
-                case 4: new Scratchcards(input); break;
-                case 5: new PlantingSeeds(input); break;
-                case 6: new ToyRace(input); break;
-                case 7: new CamelCards(input); break;
-                case 8: new HauntedWasteland(input); break;
-                case 9: new MirageMaintenance(input); break;
-                case 10: new PipeMaze(input); break;
+                case 1: new Trebuchet(input, isPart2); break;
+                case 2: new CubeConundrum(input, isPart2); break;
+                case 3: new GearRatios(input, isPart2); break;
+                case 4: new Scratchcards(input, isPart2); break;
+                case 5: new PlantingSeeds(input, isPart2); break;
+                case 6: new ToyRace(input, isPart2); break;
+                case 7: new CamelCards(input, isPart2); break;
+                case 8: new HauntedWasteland(input, isPart2); break;
+                case 9: new MirageMaintenance(input, isPart2); break;
+                case 10: new PipeMaze(input, isPart2); break;
                 default:
                     break;
             }

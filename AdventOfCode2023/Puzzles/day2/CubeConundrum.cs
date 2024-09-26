@@ -12,14 +12,14 @@ namespace AdventOfCode2023.Puzzles
 {
     public class CubeConundrum : PuzzleBase
     {
-        public CubeConundrum(string input) : base(input)
+        public CubeConundrum(string input, bool isPart2) : base(input, isPart2)
         {
         }
 
         public CubeGame CurrentGame { get; set; }
         public List<CubeGame> Games { get; set; } = new List<CubeGame>();
 
-        public override void Solve()
+        public override void SolvePart1()
         {
             int sumOfIds = 0;
             int sumOfCubePower = 0;
@@ -55,6 +55,11 @@ namespace AdventOfCode2023.Puzzles
             
             Console.WriteLine("SumOfIds:" + sumOfIds);
             Console.WriteLine("CubePower:" + sumOfCubePower);
+        }
+
+        public override void SolvePart2()
+        {
+            throw new NotImplementedException("there is no Part2 here!");
         }
 
         protected override string GetDefaultInputFromDerived()
