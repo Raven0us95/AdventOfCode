@@ -19,14 +19,22 @@ namespace AdventOfCode2023.Puzzles.day9
             var input = GetInputStringArray();
             foreach (var history in input)
             {
-                int nextValue = FindNextValue(history, true);
+                int nextValue = FindNextValue(history, false);
                 sum += nextValue;
             }
+            Console.WriteLine($"Solution: {sum}");
         }
 
         public override void SolvePart2() 
-        { 
-            throw new NotImplementedException("there is no Part2 here!");
+        {
+            int sum = 0;
+            var input = GetInputStringArray();
+            foreach (var history in input)
+            {
+                int nextValue = FindNextValue(history, true);
+                sum += nextValue;
+            }
+            Console.WriteLine($"Solution: {sum}");
         }
 
         private int FindNextValue(string history, bool findPreviousValue)
@@ -91,7 +99,7 @@ namespace AdventOfCode2023.Puzzles.day9
 
         protected override string GetDefaultInputFromDerived()
         {
-            return "0 3 6 9 12 15\r\n1 3 6 10 15 21\r\n10 13 16 21 30 45";
+            return "10 13 16 21 30 45 68\r\n3 3 5 9 15 23\r\n0 2 4 6 8\r\n2 2 2 2\r\n0 0 0";
         }
     }
 }
