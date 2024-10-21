@@ -17,6 +17,7 @@ namespace AdventOfCode2023.Puzzles.day10
         private MazeMap map = new MazeMap();
         public PipeMaze(string input, bool isPart2) : base(input, isPart2)
         {
+            
         }
 
         public override void SolvePart1()
@@ -96,7 +97,8 @@ namespace AdventOfCode2023.Puzzles.day10
                         if (IsAdjacent(centerY, centerX, i, j))
                         {
                             map.NextNode = maze[i, j];
-                            if (map.Pipes.Contains(map.NextNode))
+                            var canConnect = PipeConnectionHelper.Instance.CanConnect(maze, map.LastPositionY, map.LastPositionX, j, i);
+                            if (map.Pipes.Contains(map.NextNode) && canConnect) // add check if pipes can connect
                             {
                                 if (map.VisitedNodes.Contains(map.VisitedNodes.FirstOrDefault(x => x.positionX == j && x.positionY == i)))
                                 {
@@ -183,6 +185,5 @@ namespace AdventOfCode2023.Puzzles.day10
                 //".L-J.\r\n" +
                 //".....";
         }
-
     }
 }
