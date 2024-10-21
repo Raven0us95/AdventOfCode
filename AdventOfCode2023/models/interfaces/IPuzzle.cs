@@ -10,5 +10,6 @@ namespace AdventOfCode2023.models
     {
         string Input { get; set; }
         void SolvePart1();
+        void SolvePart2();
     }
 }
