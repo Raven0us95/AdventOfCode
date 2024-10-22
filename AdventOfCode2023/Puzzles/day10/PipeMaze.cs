@@ -97,7 +97,7 @@ namespace AdventOfCode2023.Puzzles.day10
                         if (IsAdjacent(centerY, centerX, i, j))
                         {
                             map.NextNode = maze[i, j];
-                            var canConnect = PipeConnectionHelper.Instance.CanConnect(maze, map.LastPositionY, map.LastPositionX, j, i);
+                            var canConnect = PipeConnectionHelper.Instance.CanConnect(maze, map.LastPositionY, map.LastPositionX, i, j);
                             if (map.Pipes.Contains(map.NextNode) && canConnect) // add check if pipes can connect
                             {
                                 if (map.VisitedNodes.Contains(map.VisitedNodes.FirstOrDefault(x => x.positionX == j && x.positionY == i)))
