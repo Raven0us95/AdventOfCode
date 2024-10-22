@@ -80,6 +80,18 @@ namespace AdventOfCode2023.Puzzles.day10
                 {
                     return false;
                 }
+                if (char1 == 'S' && char2 == '|' && row1 == row2)
+                {
+                    return false;
+                }
+                if (char1 == 'J' && char2 == 'S' && row1 < row2)
+                {
+                    return false;
+                }
+                if (char1 == '|' && char2 == 'S' && col1 != col2)
+                {
+                    return false;
+                }
                 return true;  
             }
 
@@ -190,8 +202,51 @@ namespace AdventOfCode2023.Puzzles.day10
                 {
                     return true;
                 }
-
-                return false; // Valid connection found
+                if (char1 == 'J' && char2 == 'F' && col1 > col2)
+                {
+                    return true;
+                }
+                if (char1 == 'F' && char2 == '|' && row1 < row2)
+                {
+                    return true;
+                }
+                if (char1 == '|' && char2 == '|' && row1 != row2)
+                {
+                    return true;
+                }
+                if (char1 == 'L' && char2 == '7' && row1 > row2)
+                {
+                    return true;
+                }
+                if (char1 == 'L' && char2 == 'F' && row1 > row2)
+                {
+                    return true;
+                }
+                if (char1 == 'F' && char2 == 'L' && row1 < row2)
+                {
+                    return true;
+                }
+                if (char1 == 'L' && char2 == '-' && row1 == row2 && col1 < col2)
+                {
+                    return true;
+                }
+                if (char1 == '-' && char2 == 'L' && row1 == row2 && col1 > col2)
+                {
+                    return true;
+                }
+                if (char1 == '|' && char2 == 'F' && row1 > row2 && col1 == col2)
+                {
+                    return true;
+                }
+                if (char1 == '7' && char2 == 'L' && row1 < row2 && col1 == col2)
+                {
+                    return true;
+                }
+                if (char1 == 'L' && char2 == 'J' && col1 < col2 && row1 == row2)
+                {
+                    return true;
+                }
+                return false; // no Valid connection found
             }
 
 

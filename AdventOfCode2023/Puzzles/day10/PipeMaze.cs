@@ -75,15 +75,6 @@ namespace AdventOfCode2023.Puzzles.day10
 
                             CheckSquarePattern(maze, i, j, 1);
                         }
-                        else
-                        {
-                            // pipe char position found
-                            // find the next pipe that is closest to the StartPosition starting with East (CheckSquarePattern)
-                            // depending on which pipe type is found try to move along the pipes and confirm that it loops back to the StartPosition
-                            // -> CheckIsLoop if false continue with the next pipe from StartPosition (South) and so on...
-                            // count the steps the loop takes divided by 2 -> farthest position from StartPosition
-                            //CheckSquarePattern(maze, i, j, 1);
-                        }
                     }
                 }
             }
@@ -102,7 +93,7 @@ namespace AdventOfCode2023.Puzzles.day10
                     {
                         // visualize
                         //Console.WriteLine($"Position in square pattern: ({i}, {j}) - Character: {charArray[i, j]}");
-                        PrintArray(maze, i, j, centerY, centerX);
+                        //PrintArray(maze, i, j, centerY, centerX);
                         if (IsAdjacent(centerY, centerX, i, j))
                         {
                             map.NextNode = maze[i, j];
@@ -123,6 +114,7 @@ namespace AdventOfCode2023.Puzzles.day10
                                     continue;
                                 }
                                 map.AddNode(j, i);
+                                routingCounter = 0;
                                 
                                 return;
                             }
@@ -165,14 +157,19 @@ namespace AdventOfCode2023.Puzzles.day10
                 for (int j = 0; j < charArray.GetLength(1); j++)
                 {
                     Console.ForegroundColor = ConsoleColor.White;
+                    if (map.Nodes.Any(x => x.Position.positionX == j && x.Position.positionY == i))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                    }
                     if (i == x && j == y)
                     {
                         Console.ForegroundColor = ConsoleColor.Green;
                     }
                     if (i == centerX && j == centerY)
                     {
-                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.ForegroundColor = ConsoleColor.Magenta;
                     }
+                    
                     Console.Write(charArray[i, j]);
                 }
                 Console.WriteLine();
