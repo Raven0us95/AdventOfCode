@@ -1,10 +1,12 @@
 ﻿using AdventOfCode2023.Handler;
+using AdventOfCode2023.Helper;
 using AdventOfCode2023.models.abstraction;
 using System;
 using System.Collections.Generic;
 using System.IO.MemoryMappedFiles;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,7 +20,7 @@ namespace AdventOfCode2023.Puzzles.day10
         private MazeMap map = new MazeMap();
         public PipeMaze(string input, bool isPart2) : base(input, isPart2)
         {
-            
+
         }
 
         public override void SolvePart1()
@@ -47,7 +49,90 @@ namespace AdventOfCode2023.Puzzles.day10
 
         public override void SolvePart2()
         {
-            throw new NotImplementedException("there is no Part2 here!");
+            // part 2 wants us to find a nest...
+            // Find how many tiles are enclosed by the loop from part 1
+            SolvePart1();
+
+            var loop = CreateLoop(map.Nodes);
+            PrintLoop(loop);
+
+            FloodFillWorker.Instance.Work(loop);
+            //var loopAsString = GetLoopAsString(loop);
+            
+        }
+
+        private string GetLoopAsString(char[,] loop)
+        {
+            var loopAsString = String.Empty;
+            for (int i = 0; i < loop.GetLength(0); i++)
+            {
+                for (int j = 0; j < loop.GetLength(1); j++)
+                {
+                    loopAsString += loop[i, j];
+                }
+            }
+            return loopAsString;
+        }
+
+        private char[,] CreateLoop(List<Node> nodes)
+        {
+            // populate a charArray with nodes and empty spaces
+
+            // define array size by highest position values of nodes
+            int maxX = 0;
+            int maxY = 0;
+            foreach (var node in nodes)
+            {
+                if (node.Position.positionX >= maxX)
+                {
+                    maxX = node.Position.positionX;
+                }
+                if (node.Position.positionY >= maxY)
+                {
+                    maxY = node.Position.positionY;
+                }
+            }
+            char[,] output = new char[maxY, maxX];
+
+            // set all array values to char 0
+            // set each node to its position in the array
+            for (int i = 0; i < output.GetLength(0); i++)
+            {
+                for (int j = 0; j < output.GetLength(1); j++)
+                {
+                    output[i, j] = '0';
+
+                    // found node position
+                    var node = nodes.FirstOrDefault(x => x.Position.positionY == i && x.Position.positionX == j);
+                    var nodeIndex = nodes.IndexOf(node);
+                    if (nodeIndex >= 0)
+                    {
+                        output[i, j] = nodes[nodeIndex].Symbol;
+                    }
+                }
+            }
+
+            return output;
+        }
+
+        private void PrintLoop(char[,] loop)
+        {
+            // print the array
+            Console.SetCursorPosition(0, 0);
+            for (int i = 0; i < loop.GetLength(0); i++)
+            {
+                for (int j = 0; j < loop.GetLength(1); j++)
+                {
+                    Console.ForegroundColor = ConsoleColor.White;
+                    if (map.Nodes.Any(x => x.Position.positionX == j && x.Position.positionY == i))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                    }
+
+                    Console.Write(loop[i, j]);
+                }
+                Console.WriteLine();
+            }
         }
 
         private void SetStartPosition(char[,] maze)
@@ -79,7 +164,7 @@ namespace AdventOfCode2023.Puzzles.day10
                 }
             }
         }
-        
+
         private void CheckSquarePattern(char[,] maze, int centerY, int centerX, int radius)
         {
             // Iterate through positions in a square pattern around the center
@@ -115,7 +200,7 @@ namespace AdventOfCode2023.Puzzles.day10
                                 }
                                 map.AddNode(j, i);
                                 routingCounter = 0;
-                                
+
                                 return;
                             }
                         }
@@ -169,7 +254,7 @@ namespace AdventOfCode2023.Puzzles.day10
                     {
                         Console.ForegroundColor = ConsoleColor.Magenta;
                     }
-                    
+
                     Console.Write(charArray[i, j]);
                 }
                 Console.WriteLine();
@@ -185,11 +270,11 @@ namespace AdventOfCode2023.Puzzles.day10
                 "SJ.L7\r\n" +
                 "|F--J\r\n" +
                 "LJ...";
-                //".....\r\n" +
-                //".S-7.\r\n" +
-                //".|.|.\r\n" +
-                //".L-J.\r\n" +
-                //".....";
+            //".....\r\n" +
+            //".S-7.\r\n" +
+            //".|.|.\r\n" +
+            //".L-J.\r\n" +
+            //".....";
         }
     }
 }
