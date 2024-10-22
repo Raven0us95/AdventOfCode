@@ -14,6 +14,7 @@ namespace AdventOfCode2023.Puzzles.day10
     {
         private bool isEnd = false;
         private bool keepRouting = true;
+        private int routingCounter = 0;
         private MazeMap map = new MazeMap();
         public PipeMaze(string input, bool isPart2) : base(input, isPart2)
         {
@@ -35,6 +36,12 @@ namespace AdventOfCode2023.Puzzles.day10
             while (keepRouting)
             {
                 CheckSquarePattern(maze, map.LastPositionY, map.LastPositionX, 1);
+                routingCounter++;
+                if (routingCounter > 10)
+                {
+                    SetStartPosition(map.maze);
+                    // hit dead End Start next route
+                }
             }
         }
 
@@ -45,6 +52,8 @@ namespace AdventOfCode2023.Puzzles.day10
 
         private void SetStartPosition(char[,] maze)
         {
+            map.Steps = 0;
+            routingCounter = 0;
             for (int i = 0; i < maze.GetLength(0); i++)
             {
                 for (int j = 0; j < maze.GetLength(1); j++)
@@ -93,7 +102,7 @@ namespace AdventOfCode2023.Puzzles.day10
                     {
                         // visualize
                         //Console.WriteLine($"Position in square pattern: ({i}, {j}) - Character: {charArray[i, j]}");
-                        PrintArray(maze, i, j, centerY, centerX);
+                        //PrintArray(maze, i, j, centerY, centerX);
                         if (IsAdjacent(centerY, centerX, i, j))
                         {
                             map.NextNode = maze[i, j];
@@ -150,7 +159,7 @@ namespace AdventOfCode2023.Puzzles.day10
         {
             //Print the 2D char array
             Console.SetCursorPosition(0, 0);
-
+            // could leave an orange trail for visited nodes
             for (int i = 0; i < charArray.GetLength(0); i++)
             {
                 for (int j = 0; j < charArray.GetLength(1); j++)
@@ -168,7 +177,7 @@ namespace AdventOfCode2023.Puzzles.day10
                 }
                 Console.WriteLine();
             }
-            Thread.Sleep(500);
+            Thread.Sleep(100);
         }
 
         protected override string GetDefaultInputFromDerived()
