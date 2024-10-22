@@ -102,7 +102,7 @@ namespace AdventOfCode2023.Puzzles.day10
                     {
                         // visualize
                         //Console.WriteLine($"Position in square pattern: ({i}, {j}) - Character: {charArray[i, j]}");
-                        //PrintArray(maze, i, j, centerY, centerX);
+                        PrintArray(maze, i, j, centerY, centerX);
                         if (IsAdjacent(centerY, centerX, i, j))
                         {
                             map.NextNode = maze[i, j];

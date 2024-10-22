@@ -75,7 +75,12 @@ namespace AdventOfCode2023.Puzzles.day10
             // Special case: If either character is 'S', they can always connect
             if (char1 == 'S' || char2 == 'S')
             {
-                return true;  // 'S' can always connect to any other character
+                // 'S' can almost always connect to any other character
+                if (char1 == 'S' && char2 == 'J' && row1 > row2)
+                {
+                    return false;
+                }
+                return true;  
             }
 
             // Check the general connection rules
