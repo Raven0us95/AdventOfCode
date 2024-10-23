@@ -26,7 +26,19 @@ namespace AdventOfCode2023.Puzzles.day10
         public override void SolvePart1()
         {
             map.maze = GetInput2DCharArray();
-
+            char[,] testInput = new char[9,10]
+            {
+                { '.', '.', '.', '.', '.', '.', '.', '.', '.', '.' },
+                { '.', 'S', '-', '-', '-', '-', '-', '-', '7', '.' },
+                { '.', '|', 'F', '-', '-', '-', '-', '7', '|', '.' },
+                { '.', '|', '|', '.', '.', '.', '.', '|', '|', '.' },
+                { '.', '|', '|', '.', '.', '.', '.', '|', '|', '.' },
+                { '.', '|', 'L', '-', '7',  'F', '-', 'J', '|', '.' },
+                { '.', '|', '.', '.', '|', '|', '.', '.', '|', '.' },
+                { '.', 'L', '-', '-', 'J', 'L', '-', '-', 'J', '.' },
+                { '.', '.', '.', '.', '.', '.', '.', '.', '.', '.' }
+            };
+            //map.maze = testInput;
             SetStartPosition(map.maze);
 
             FindRoute(map.maze);
@@ -51,14 +63,152 @@ namespace AdventOfCode2023.Puzzles.day10
         {
             // part 2 wants us to find a nest...
             // Find how many tiles are enclosed by the loop from part 1
+            int sumOfEnclosedTiles = 0;
+
             SolvePart1();
 
             var loop = CreateLoop(map.Nodes);
-            PrintLoop(loop);
+            //PrintLoop(loop);
 
-            FloodFillWorker.Instance.Work(loop);
-            //var loopAsString = GetLoopAsString(loop);
+            // transform loop to have each pipe be represented in a 3x3 (we want to zoom in)
+            var scaledLoop = UpScaleLoop(loop, 3);
+            FloodFill.Instance.FloodFillArea(scaledLoop, 3, 3, '0', '.');
+            //FloodFill.Instance.PrintGrid(scaledLoop);
+            var resultLoop = DownScaleLoop(scaledLoop, 3);
+            //FloodFill.Instance.PrintGrid(resultLoop);
+
+            for (int i = 0; i < resultLoop.GetLength(0); i++)
+            {
+                for (int j = 0; j < resultLoop.GetLength(1); j++)
+                {
+                    if (resultLoop[i,j] == '0')
+                    {
+                        sumOfEnclosedTiles++;
+                    }
+                }
+            }
+            Console.WriteLine($"The sum of enclosed tiles is {sumOfEnclosedTiles}");
+        }
+
+        private char[,] DownScaleLoop(char[,] loop, int factor)
+        {
+            // create empty scaled down array
+            char[,] output = new char[loop.GetLength(0) / factor, loop.GetLength(1) / factor];
+            // fill empty
+            for (int i = 0; i < output.GetLength(0); i++)
+            {
+                for (int j = 0; j < output.GetLength(1); j++)
+                {
+                    output[i, j] = '?';
+                }
+            }
+
+            for (int i = 0; i < loop.GetLength(0); i++)
+            {
+                if (i % 3 != 1)
+                {
+                    continue;
+                }
+                for (int j = 0; j < loop.GetLength(1); j++)
+                {
+                    if (j % 3 != 1)
+                    {
+                        continue;
+                    }
+                    output[i / factor, j / factor] = loop[i, j];
+                }
+            }
+
+            return output;
+        }
+
+        private char[,] UpScaleLoop(char[,] loop, int factor)
+        {
+            // test
+            loop = map.maze;
+            //
+            // create empty scaled up array
+            char[,] output = new char[loop.GetLength(0) * factor, loop.GetLength(1) * factor];
+            // fill empty
+            for (int i = 0; i < output.GetLength(0); i++)
+            {
+                for (int j = 0; j < output.GetLength(1); j++)
+                {
+                    output[i, j] = '0';
+                }
+            }
+            // fill in characters
+            for (int i = 0; i < loop.GetLength(0); i++)
+            {
+                for (int j = 0; j < loop.GetLength(1); j++)
+                {
+                    var character = loop[i, j];
+                    // transform characters into shapes
+                    if (character == '.')
+                    {
+                        continue;
+                    }
+                    var ei = i * factor + 1;
+                    var ej = j * factor + 1;
+
+                    output[ei, ej] = character;
+
+                    if (character == '|')
+                    {
+                        output[ei - 1, ej] = character;
+                        output[ei + 1, ej] = character;
+                        continue;
+                    }
+                    if (character == '-')
+                    {
+                        output[ei, ej - 1] = character;
+                        output[ei, ej + 1] = character;
+                        continue;
+                    }
+                    if (character == 'L')
+                    {
+                        output[ei - 1, ej] = '|';
+                        output[ei, ej + 1] = '-';
+                        continue;
+                    }
+                    if (character == 'J')
+                    {
+                        output[ei - 1, ej] = '|';
+                        output[ei, ej - 1] = '-';
+                        continue;
+                    }
+                    if (character == '7')
+                    {
+                        output[ei + 1, ej] = '|';
+                        output[ei, ej - 1] = '-';
+                        continue;
+                    }
+                    if (character == 'F')
+                    {
+                        output[ei, ej + 1] = '-';
+                        output[ei + 1, ej] = '|';
+                        continue;
+                    }
+                    if (character == 'S')
+                    {
+                        output[ei, ej + 1] = '-';
+                        output[ei, ej] = 'F';
+                        output[ei + 1, ej] = '|';
+                        continue;
+                    }
+
+                    break;
+                }
+            }
             
+            //PrintLoop(output);
+            return output;
+
+            // L
+
+            // . | .
+            // . L -
+            // . . .
         }
 
         private string GetLoopAsString(char[,] loop)
@@ -118,6 +268,7 @@ namespace AdventOfCode2023.Puzzles.day10
         private void PrintLoop(char[,] loop)
         {
             // print the array
+            Console.Clear();
             Console.SetCursorPosition(0, 0);
             for (int i = 0; i < loop.GetLength(0); i++)
             {
