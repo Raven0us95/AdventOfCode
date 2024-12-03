@@ -38,7 +38,7 @@ internal class Program
             switch (day)
             {
                 case 1: new Locations(input, isPart2); break;
-                case 2: break;
+                case 2: new Reports(input, isPart2); break;
                 case 3: new CorruptedData(input, isPart2); break;
                 
                 default: Console.WriteLine("this day is not yet implemented");
