@@ -1,4 +1,5 @@
 ﻿using AdventOfCode2024.Puzzles.day1;
+using AdventOfCode2024.Puzzles.day3;
 using System.Diagnostics;
 
 internal class Program
@@ -37,6 +38,7 @@ internal class Program
             switch (day)
             {
                 case 1: new Locations(input, isPart2); break;
+                case 2: new CorruptedData(input, isPart2); break;
                 
                 default: Console.WriteLine("this day is not yet implemented");
                     break;
