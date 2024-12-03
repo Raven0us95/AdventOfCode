@@ -17,7 +17,8 @@ public class Reports : PuzzleBase
         List<string> safeReports = new List<string>();
         foreach (var report in reports)
         {
-            var isSafe = CheckReportSafety(report, false);
+            var reportValues = report.Split(' ', StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList();
+            var isSafe = CheckReportSafety(reportValues);
             if (isSafe)
             {
                 safeReports.Add(report);
@@ -26,19 +27,15 @@ public class Reports : PuzzleBase
         Console.WriteLine($"there are {safeReports.Count()} safe reports");
     }
 
-    private bool CheckReportSafety(string report, bool useDampener)
+    private bool CheckReportSafety(List<int> report)
     {
-        if (report.Count() < 2) { return true; }
-        var reportValues = report.Split(" ").ToList();
         bool isSafe = true;
-        bool dampenerIsUsed = false;
-        int dampenedLevelIndex = 0;
         bool isIncreasing = true;
         bool isDecreasing = true;
-        for (int i = 1; i < reportValues.Count; i++)
+        for (int i = 1; i < report.Count; i++)
         {
-            var currentLevel = int.Parse(reportValues[i]);
-            var previousLevel = int.Parse(reportValues[i - 1]);
+            var currentLevel = report[i];
+            var previousLevel = report[i - 1];
             if (Math.Abs(currentLevel - previousLevel) <= 3)
             {
                 if (previousLevel > currentLevel)
@@ -52,79 +49,26 @@ public class Reports : PuzzleBase
 
                 if (previousLevel == currentLevel)
                 {
-                    if (useDampener && !dampenerIsUsed)
-                    {
-                        dampenerIsUsed = true;
-                        dampenedLevelIndex = i - 1;
-                    }
-                    else
-                    {
-                        isSafe = false;
-                    }
+
+                    isSafe = false;
+
                 }
                 if (isIncreasing && isDecreasing || !isIncreasing && !isDecreasing)
                 {
-                    if (useDampener && !dampenerIsUsed)
-                    {
-                        dampenerIsUsed = true;
-                        dampenedLevelIndex = i - 1;
-                    }
-                    else
-                    {
-                        isSafe = false;
-                    }
+
+
+                    isSafe = false;
+
                 }
             }
             else
             {
-                if (useDampener && !dampenerIsUsed)
-                {
-                    dampenerIsUsed = true;
-                    dampenedLevelIndex = i - 1;
-                }
-                else
-                {
-                    isSafe = false;
-                }
+
+                isSafe = false;
+
             }
         }
 
-        if (dampenerIsUsed)
-        {
-            isIncreasing = true;
-            isDecreasing = true;
-            isSafe = true;
-            reportValues.RemoveAt(dampenedLevelIndex);
-            for (int i = 1; i < reportValues.Count; i++)
-            {
-                var currentLevel = int.Parse(reportValues[i]);
-                var previousLevel = int.Parse(reportValues[i - 1]);
-                if (Math.Abs(currentLevel - previousLevel) <= 3)
-                {
-                    if (previousLevel > currentLevel)
-                    {
-                        isIncreasing = false;
-                    }
-                    else if (previousLevel < currentLevel)
-                    {
-                        isDecreasing = false;
-                    }
-
-                    if (previousLevel == currentLevel)
-                    {
-                        isSafe = false;
-                    }
-                    if (isIncreasing && isDecreasing || !isIncreasing && !isDecreasing)
-                    {
-                        isSafe = false;
-                    }
-                }
-                else
-                {
-                    isSafe = false;
-                }
-            }
-        }
         return isSafe;
     }
 
@@ -135,10 +79,24 @@ public class Reports : PuzzleBase
         List<string> safeReports = new List<string>();
         foreach (var report in reports)
         {
-            var isSafe = CheckReportSafety(report, true);
+            var reportValues = report.Split(' ', StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList();
+            var isSafe = CheckReportSafety(reportValues);
             if (isSafe)
             {
                 safeReports.Add(report);
+            }
+            else
+            {
+                for (int i = 0; i < reportValues.Count; i++)
+                {
+                    var reportCopy = reportValues.ToList();
+                    reportCopy.RemoveAt(i);
+                    if (CheckReportSafety(reportCopy))
+                    {
+                        safeReports.Add(report);
+                        break;
+                    }
+                }
             }
         }
         Console.WriteLine($"there are {safeReports.Count()} safe reports");
