@@ -1,0 +1,62 @@
+﻿using AdventOfCode2024.Puzzles.day1;
+using System.Diagnostics;
+
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        bool repeat = false;
+        bool isPart2 = false;
+        do
+        {
+            Console.WriteLine("Please enter the current advent day.");
+            var dayInput = Console.ReadLine();
+            int.TryParse(dayInput, out int day);
+            string path = $@"{AppDomain.CurrentDomain.BaseDirectory}day{day}_input.txt";
+
+            var input = AdventOfCode2023.Factories.InputFactory.Instance.GetInputString(path);
+
+            if (input != null)
+            {
+                Console.WriteLine("Type 'y' if you want to solve Part2 of the Puzzle");
+
+                var isPart2Input = Console.ReadLine();
+                if (isPart2Input != null)
+                {
+                    if (isPart2Input.FirstOrDefault().ToString().ToLower().Equals("y"))
+                    {
+                        isPart2 = true;
+                    }
+                    else
+                    {
+                        isPart2 = false;
+                    }
+                }
+            }
+
+            switch (day)
+            {
+                case 1: new Locations(input, isPart2); break;
+                
+                default:
+                    break;
+            }
+
+            Console.WriteLine("Type 'y' if you want to select a new day.");
+
+            var repeatInput = Console.ReadLine();
+            if (repeatInput != null)
+            {
+                if (repeatInput.FirstOrDefault().ToString().ToLower().Equals("y"))
+                {
+                    repeat = true;
+                }
+                else { repeat = false; }
+            }
+        } while (repeat);
+
+        Console.WriteLine("Press any key to exit.");
+        Console.ReadLine();
+        Environment.Exit(0);
+    }
+}
