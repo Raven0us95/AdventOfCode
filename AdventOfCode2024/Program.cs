@@ -38,7 +38,7 @@ internal class Program
             {
                 case 1: new Locations(input, isPart2); break;
                 
-                default:
+                default: Console.WriteLine("this day is not yet implemented");
                     break;
             }
 
