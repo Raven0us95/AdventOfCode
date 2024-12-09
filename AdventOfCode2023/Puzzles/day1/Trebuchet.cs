@@ -19,7 +19,7 @@ namespace AdventOfCode2023.Puzzles
 
         public override void SolvePart1()
         {
-            var array = GetInputStringArray();
+            var array = GetStringArray();
             //string[] array = new string[]{
             //    "1abc2",
             //    "pqr3stu8vwx",
@@ -43,7 +43,7 @@ namespace AdventOfCode2023.Puzzles
 
         public override void SolvePart2()
         {
-            var array = GetInputStringArray();
+            var array = GetStringArray();
             //string[] array = new string[]{
             //    "two1nine",
             //    "eightwothree",

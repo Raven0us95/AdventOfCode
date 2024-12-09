@@ -26,7 +26,7 @@ namespace AdventOfCode2023.Puzzles.day6
 
         public override void SolvePart1()
         {
-            var input = GetInputStringArray();
+            var input = GetStringArray();
 
             // PART ONE
             int result = 1;
@@ -47,7 +47,7 @@ namespace AdventOfCode2023.Puzzles.day6
 
         public override void SolvePart2()
         {
-            var input = GetInputStringArray();
+            var input = GetStringArray();
             // the input does not describe multiple races, it describes one long race. Ignore the white spaces on the input!
             int result = 1;
             Regex regex = new Regex(@"\b\d+\b");

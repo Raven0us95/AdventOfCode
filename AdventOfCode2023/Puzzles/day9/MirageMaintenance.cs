@@ -16,7 +16,7 @@ namespace AdventOfCode2023.Puzzles.day9
         public override void SolvePart1()
         {
             int sum = 0;
-            var input = GetInputStringArray();
+            var input = GetStringArray();
             foreach (var history in input)
             {
                 int nextValue = FindNextValue(history, false);
@@ -28,7 +28,7 @@ namespace AdventOfCode2023.Puzzles.day9
         public override void SolvePart2() 
         {
             int sum = 0;
-            var input = GetInputStringArray();
+            var input = GetStringArray();
             foreach (var history in input)
             {
                 int nextValue = FindNextValue(history, true);

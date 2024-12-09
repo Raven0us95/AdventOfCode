@@ -36,7 +36,7 @@ namespace AdventOfCode2023.Puzzles.day5
         }
         public override void SolvePart1()
         {
-            var input = GetInputStringArray();
+            var input = GetStringArray();
             seeds = GetSeeds(input);
             maps = CreateMaps(input);
 
@@ -51,7 +51,7 @@ namespace AdventOfCode2023.Puzzles.day5
 
         public override void SolvePart2()
         {
-            var input = GetInputStringArray();
+            var input = GetStringArray();
 
             foreach (string line in input[2..])
             {

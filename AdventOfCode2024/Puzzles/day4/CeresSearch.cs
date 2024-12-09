@@ -26,7 +26,7 @@ internal class CeresSearch : PuzzleBase
 
     public override void SolvePart1()
     {
-        var grid = GetInputStringArray();
+        var grid = GetStringArray();
         // find all X positions
         // search for MAS in all offset directions
         // Count XMAS

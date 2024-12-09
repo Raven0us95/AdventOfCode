@@ -18,7 +18,7 @@ namespace AdventOfCode2023.Puzzles.day8
 
         public override void SolvePart1()
         {
-            var input = GetInputStringArray();
+            var input = GetStringArray();
             instructions = input[0];
 
             var currentNode = input.Skip(2).FirstOrDefault(x => x.StartsWith("AAA"));
@@ -44,7 +44,7 @@ namespace AdventOfCode2023.Puzzles.day8
         }
         public override void SolvePart2()
         {
-            var input = GetInputStringArray();
+            var input = GetStringArray();
             instructions = input[0];
             // find starting nodes ending with A
             // start at the same time and find endnodes ending with Z

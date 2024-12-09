@@ -15,7 +15,7 @@ namespace AdventOfCode2023.Puzzles.day7
 
         public override void SolvePart1()
         {
-            var input = GetInputStringArray();
+            var input = GetStringArray();
 
             var handManager = new HandManager();
             handManager.CreateHandsFromInput(input);
@@ -25,7 +25,7 @@ namespace AdventOfCode2023.Puzzles.day7
         }
         public override void SolvePart2()
         {
-            var input = GetInputStringArray();
+            var input = GetStringArray();
 
             var handManager = new HandManager();
             handManager.CreateHandsFromInput(input);
