@@ -26,7 +26,7 @@ namespace AdventOfCode2024.Puzzles.day5
             List<List<int>> correctUpdates = new List<List<int>>();
             foreach (var update in updates)
             {
-                if (UpdateIsCorrect(update))
+                if (UpdateIsValid(update))
                 {
                     correctUpdates.Add(update);
                 }
@@ -51,7 +51,7 @@ namespace AdventOfCode2024.Puzzles.day5
             List<List<int>> fixedUpdates = new List<List<int>>();
             foreach (var update in updates)
             {
-                if (!UpdateIsCorrect(update))
+                if (!UpdateIsValid(update))
                 {
                     var fixedUpdate = FixUpdate(update);
                     fixedUpdates.Add(fixedUpdate);
@@ -135,7 +135,7 @@ namespace AdventOfCode2024.Puzzles.day5
             return (rules, updates.ToList());
         }
 
-        private bool UpdateIsCorrect(List<int> update)
+        private bool UpdateIsValid(List<int> update)
         {
             // filter rules
             var rules = GetMatchingRules(update);
