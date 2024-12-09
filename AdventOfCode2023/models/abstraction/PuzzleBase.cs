@@ -24,9 +24,13 @@ namespace AdventOfCode2023.models.abstraction
         }
         public string Input { get; set; }
 
-        public string[] GetInputStringArray()
+        public string[] GetStringArray()
         {
             return InputFactory.Instance.CreateInputStringArray(Input);
+        }
+        public string[] GetStringArray(string input)
+        {
+            return InputFactory.Instance.CreateInputStringArray(input);
         }
         public char[,] GetInput2DCharArray()
         {
