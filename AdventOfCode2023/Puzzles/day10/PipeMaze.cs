@@ -246,13 +246,13 @@ namespace AdventOfCode2023.Puzzles.day10
             int maxY = 0;
             foreach (var node in nodes)
             {
-                if (node.Position.positionX >= maxX)
+                if (node.Position.X >= maxX)
                 {
-                    maxX = node.Position.positionX;
+                    maxX = node.Position.X;
                 }
-                if (node.Position.positionY >= maxY)
+                if (node.Position.Y >= maxY)
                 {
-                    maxY = node.Position.positionY;
+                    maxY = node.Position.Y;
                 }
             }
             char[,] output = new char[maxY, maxX];
@@ -266,7 +266,7 @@ namespace AdventOfCode2023.Puzzles.day10
                     output[i, j] = '0';
 
                     // found node position
-                    var node = nodes.FirstOrDefault(x => x.Position.positionY == i && x.Position.positionX == j);
+                    var node = nodes.FirstOrDefault(x => x.Position.Y == i && x.Position.X == j);
                     var nodeIndex = nodes.IndexOf(node);
                     if (nodeIndex >= 0)
                     {
@@ -288,7 +288,7 @@ namespace AdventOfCode2023.Puzzles.day10
                 for (int j = 0; j < loop.GetLength(1); j++)
                 {
                     Console.ForegroundColor = ConsoleColor.White;
-                    if (map.Nodes.Any(x => x.Position.positionX == j && x.Position.positionY == i))
+                    if (map.Nodes.Any(x => x.Position.X == j && x.Position.Y == i))
                     {
                         Console.ForegroundColor = ConsoleColor.Magenta;
                     }
@@ -349,7 +349,7 @@ namespace AdventOfCode2023.Puzzles.day10
                             var canConnect = PipeConnectionHelper.Instance.CanConnect(maze, map.LastPositionY, map.LastPositionX, i, j);
                             if (map.Pipes.Contains(map.NextNode) && canConnect) // add check if pipes can connect
                             {
-                                if (map.VisitedNodes.Contains(map.VisitedNodes.FirstOrDefault(x => x.positionX == j && x.positionY == i)))
+                                if (map.VisitedNodes.Contains(map.VisitedNodes.FirstOrDefault(x => x.X == j && x.Y == i)))
                                 {
                                     if (map.NextNode == 'S')
                                     {
@@ -406,7 +406,7 @@ namespace AdventOfCode2023.Puzzles.day10
                 for (int j = 0; j < charArray.GetLength(1); j++)
                 {
                     Console.ForegroundColor = ConsoleColor.White;
-                    if (map.Nodes.Any(x => x.Position.positionX == j && x.Position.positionY == i))
+                    if (map.Nodes.Any(x => x.Position.X == j && x.Position.Y == i))
                     {
                         Console.ForegroundColor = ConsoleColor.Yellow;
                     }
