@@ -1,6 +1,7 @@
 ﻿using AdventOfCode2024.Puzzles.day1;
 using AdventOfCode2024.Puzzles.day3;
 using AdventOfCode2024.Puzzles.day5;
+using AdventOfCode2024.Puzzles.day6;
 using System.Diagnostics;
 
 internal class Program
@@ -43,6 +44,7 @@ internal class Program
                 case 3: new CorruptedData(input, isPart2); break;
                 case 4: new CeresSearch(input, isPart2); break;
                 case 5: new PrintQueue(input, isPart2); break;
+                case 6: new GuardGallivant(input, isPart2); break;
                 default:
                     Console.WriteLine("this day is not yet implemented");
                     break;
